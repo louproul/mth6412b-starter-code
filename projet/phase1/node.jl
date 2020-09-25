@@ -3,6 +3,7 @@ import Base.show
 """Type abstrait dont d'autres types de noeuds dériveront."""
 abstract type AbstractNode{T} end
 
+
 """Type représentant les noeuds d'un graphe.
 
 Exemple:
