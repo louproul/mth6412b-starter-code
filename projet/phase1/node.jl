@@ -4,6 +4,7 @@ import Base.show
 abstract type AbstractNode{T} end
 
 
+
 """Type représentant les noeuds d'un graphe.
 
 Exemple:
