@@ -17,30 +17,44 @@ Attention, tous les noeuds doivent avoir des données de même type.
 mutable struct Graph{T} <: AbstractGraph{T}
   name::String
   nodes::Vector{Node{T}}
+  edges::Vector{Edge{T}}
 end
 
-"""Ajoute un noeud au graphe."""
+"""Adds a node to the graph."""
 function add_node!(graph::Graph{T}, node::Node{T}) where T
   push!(graph.nodes, node)
   graph
 end
 
-# on présume que tous les graphes dérivant d'AbstractGraph
-# posséderont des champs `name` et `nodes`.
+"""Adds an edge to the graph."""
+function add_edge!(graph::Graph{T} where T, edge::Edge{S} where S) 
+  push!(graph.edges, edge)
+  graph
+end
 
-"""Renvoie le nom du graphe."""
+
+# we assume that all graphs deriving from AbstractGraph
+# will have fields `name` and `nodes`.
+
+"""Returns the name of the graph."""
 name(graph::AbstractGraph) = graph.name
 
-"""Renvoie la liste des noeuds du graphe."""
+"""Returns the list of nodes of the graph."""
 nodes(graph::AbstractGraph) = graph.nodes
 
-"""Renvoie le nombre de noeuds du graphe."""
+"""Returns the number of nodes in the graph."""
 nb_nodes(graph::AbstractGraph) = length(graph.nodes)
 
-"""Affiche un graphe"""
+"""Returns the list of edges of the graph."""
+edges(graph::AbstractGraph) = graph.edges
+
+"""Display a graph"""
 function show(graph::Graph)
   println("Graph ", name(graph), " has ", nb_nodes(graph), " nodes.")
   for node in nodes(graph)
     show(node)
+  end
+  for edge in edges(graph)
+    show(edge)
   end
 end
