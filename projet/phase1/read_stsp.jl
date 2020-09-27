@@ -206,7 +206,7 @@ function read_stsp(filename::String)
     graph_edges[k] = sort(graph_edges[k])
   end
   println("✓")
-  return graph_nodes, graph_edges
+  return graph_nodes, graph_edges, edges_weight
 end
 
 """Affiche un graphe étant données un ensemble de noeuds et d'arêtes.
