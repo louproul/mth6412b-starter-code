@@ -24,8 +24,18 @@ md"Lien Github du code: [Branche Phase 1 du projet](https://www.google.com)"
 # ╔═╡ 07312170-00d0-11eb-2214-5f83463faa58
 begin
 	filename_stsp = "bayg29.tsp"
-	filepath = "c:\\Users\\lppro\\OneDrive\\Documents\\Poly\\Cours\\MTH6412B\\code\\project\\mth6412b-starter-code\\instances\\stsp\\"
+	root = normpath(joinpath(@__FILE__,"..","..",".."))
+	filepath_to_stsp = "instances\\stsp"
+	filepath = joinpath(root, filepath_to_stsp) 
 	filepath = joinpath(filepath, filename_stsp) 
+end
+
+# ╔═╡ b0f22570-00fc-11eb-1950-b95e857f6166
+for (root, dirs, files) in walkdir(@__DIR__)
+    println("Directories in $root")
+    for dir in dirs
+        println(joinpath(root, dir)) # path to directories
+    end
 end
 
 # ╔═╡ 1734aa10-00da-11eb-297e-fd626ae614e5
@@ -80,6 +90,7 @@ my_graph
 # ╠═c4749610-00ce-11eb-1a2f-8f0e60e9c0a2
 # ╠═5f71b5d0-00cf-11eb-067c-6f7fafd83b3f
 # ╠═07312170-00d0-11eb-2214-5f83463faa58
+# ╠═b0f22570-00fc-11eb-1950-b95e857f6166
 # ╠═1734aa10-00da-11eb-297e-fd626ae614e5
 # ╠═3e2e1e60-00e6-11eb-1fdc-d5ceafc8de0b
 # ╠═d9f48190-00e6-11eb-2871-3f3c078263fc
