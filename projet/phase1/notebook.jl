@@ -4,15 +4,23 @@
 using Markdown
 using InteractiveUtils
 
-# ╔═╡ f6a951e0-fffa-11ea-2b9d-59e9690d4fbd
-begin
-	include("node.jl")
-	include("graph.jl")
-	include("read_stsp.jl")
-end
+# ╔═╡ 2aa6afe0-00c0-11eb-3159-436f123b82bf
+include("node.jl")
+
+# ╔═╡ 29f8958e-00c0-11eb-1800-c3dc747157cf
+include("graph.jl")
+
+# ╔═╡ 29b6f8b0-00c0-11eb-1acb-055c25133995
+include("read_stsp.jl")
+
+# ╔═╡ 3b537c60-00c0-11eb-0e04-bd21aff22892
+include("edge.jl")
 
 # ╔═╡ bdb4c8b0-fffa-11ea-2269-4b812f78aee9
 md"# _Rapport MTH6412B_"
+
+# ╔═╡ 3f8454d0-00c0-11eb-068d-5d90b9d17ab7
+
 
 # ╔═╡ 296a7be0-fffb-11ea-2866-53efd7c41245
 begin
@@ -22,22 +30,25 @@ begin
 end
 
 # ╔═╡ 69cb3260-fffb-11ea-02c2-9531ad3fcc63
-graph_nodes, graph_edges = read_stsp(filepath)
+graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 
 # ╔═╡ 7a34db62-fffb-11ea-3e32-b3ab3e1995e0
 plot_graph(graph_nodes, graph_edges)
 
-# ╔═╡ 977123ee-fffb-11ea-38f8-a9e35f8c63c3
-graph_nodes[2].show
-
 # ╔═╡ 5d0c2bf0-0029-11eb-2c37-a5a6954f45d2
-node1 = Node("City 1",[100,200])
+node1 = Node("1",graph_nodes[1])
 
-# ╔═╡ ea475400-0032-11eb-1283-436bb4c05c29
-node1.name
+# ╔═╡ 32a21a50-00bf-11eb-112d-99b661017f4d
+node2 = Node("2",graph_nodes[2])
+
+# ╔═╡ 424edbf0-00bf-11eb-2786-f96c3c670cf4
+edges_weight[(1,2)]
+
+# ╔═╡ 54b3a6c0-00c1-11eb-2005-1dd3e570d39b
+parse(Int,edges_weight[(1,2)])
 
 # ╔═╡ 151c4b40-0033-11eb-2264-1dafb9b6158e
-node1.data
+edge_test = Edge("test",(node1,node2),parse(Int,edges_weight[(1,2)]))
 
 # ╔═╡ 1874ec20-0033-11eb-27cf-05b16b5889b0
 show(node1)
@@ -58,25 +69,25 @@ name(node1)
  data(node1)
 
 # ╔═╡ f67d5380-0034-11eb-015d-03101e4ed879
-
+test = Dict((1,2) => 122)
 
 # ╔═╡ 90bf7d20-0034-11eb-3a9b-11f3fe05c14d
-
+test[(2,3)] = 155
 
 # ╔═╡ 825b4110-0034-11eb-016a-9f3e48bf0937
-
+test
 
 # ╔═╡ 4c31b430-0033-11eb-2f97-a74490026d07
-
+data
 
 # ╔═╡ 4497c01e-0033-11eb-310c-ed9d156fd6ea
-
+datatest = SubString{String}["97", "205", "139", "86", "60", "220", "65", "111", "115", "227", "95", "82", "225", "168", "103", "266", "205", "149", "120", "58", "257", "152", "52", "180", "136", "82", "34", "145"]
 
 # ╔═╡ 3ebfee70-0033-11eb-3eff-f7d33c9870d0
-
+test2 = Dict((1,2) => datatest[1])
 
 # ╔═╡ 30f9c720-0033-11eb-0dd9-e9872c44cbb2
-
+test2[(1,2)]
 
 # ╔═╡ 253d5280-0033-11eb-2ed8-9b5cd37ad48f
 
@@ -119,13 +130,18 @@ show(node1)
 
 # ╔═╡ Cell order:
 # ╠═bdb4c8b0-fffa-11ea-2269-4b812f78aee9
-# ╠═f6a951e0-fffa-11ea-2b9d-59e9690d4fbd
+# ╠═2aa6afe0-00c0-11eb-3159-436f123b82bf
+# ╠═29f8958e-00c0-11eb-1800-c3dc747157cf
+# ╠═29b6f8b0-00c0-11eb-1acb-055c25133995
+# ╠═3b537c60-00c0-11eb-0e04-bd21aff22892
+# ╠═3f8454d0-00c0-11eb-068d-5d90b9d17ab7
 # ╠═296a7be0-fffb-11ea-2866-53efd7c41245
 # ╠═69cb3260-fffb-11ea-02c2-9531ad3fcc63
 # ╠═7a34db62-fffb-11ea-3e32-b3ab3e1995e0
-# ╠═977123ee-fffb-11ea-38f8-a9e35f8c63c3
 # ╠═5d0c2bf0-0029-11eb-2c37-a5a6954f45d2
-# ╠═ea475400-0032-11eb-1283-436bb4c05c29
+# ╠═32a21a50-00bf-11eb-112d-99b661017f4d
+# ╠═424edbf0-00bf-11eb-2786-f96c3c670cf4
+# ╠═54b3a6c0-00c1-11eb-2005-1dd3e570d39b
 # ╠═151c4b40-0033-11eb-2264-1dafb9b6158e
 # ╠═1874ec20-0033-11eb-27cf-05b16b5889b0
 # ╠═dccf96a0-0039-11eb-2538-e941a3ecb7a3
