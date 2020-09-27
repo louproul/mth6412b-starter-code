@@ -48,12 +48,16 @@ nb_nodes(graph::AbstractGraph) = length(graph.nodes)
 """Returns the list of edges of the graph."""
 edges(graph::AbstractGraph) = graph.edges
 
+"""Returns the number of edges in the graph."""
+nb_edges(graph::AbstractGraph) = length(graph.edges)
+
 """Display a graph"""
 function show(graph::Graph)
   println("Graph ", name(graph), " has ", nb_nodes(graph), " nodes.")
   for node in nodes(graph)
     show(node)
   end
+  println("Graph ", name(graph), " has ", nb_edges(graph), " edges.")
   for edge in edges(graph)
     show(edge)
   end
