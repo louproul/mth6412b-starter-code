@@ -92,7 +92,7 @@ end
 
 """Analyse un fichier .tsp et renvoie l'ensemble des arêtes sous la forme d'un tableau."""
 function read_edges(header::Dict{String}{String}, filename::String)
-
+  edges_weight = Dict{Tuple{Int64,Int64}}{Float64}()
   edges = []
   edge_weight_format = header["EDGE_WEIGHT_FORMAT"]
   known_edge_weight_formats = ["FULL_MATRIX", "UPPER_ROW", "LOWER_ROW",
@@ -130,6 +130,7 @@ function read_edges(header::Dict{String}{String}, filename::String)
 
           for j = start : start + n_on_this_line - 1
             n_edges = n_edges + 1
+            weight = parse(Int64, data[j+1])
             if edge_weight_format in ["UPPER_ROW", "LOWER_COL"]
               edge = (k+1, i+k+2)
             elseif edge_weight_format in ["UPPER_DIAG_ROW", "LOWER_DIAG_COL"]
@@ -144,6 +145,7 @@ function read_edges(header::Dict{String}{String}, filename::String)
               warn("Unknown format - function read_edges")
             end
             push!(edges, edge)
+            edges_weight[edge] = parse(Float64, data[j+1])
             i += 1
           end
 
@@ -166,7 +168,7 @@ function read_edges(header::Dict{String}{String}, filename::String)
     end
   end
   close(file)
-  return edges
+  return edges , edges_weight
 end
 
 """Renvoie les noeuds et les arêtes du graphe."""
@@ -182,7 +184,7 @@ function read_stsp(filename::String)
   println("✓")
 
   Base.print("Reading of edges : ")
-  edges_brut = read_edges(header, filename)
+  edges_brut , graph_weight = read_edges(header, filename)
   graph_edges = []
   for k = 1 : dim
     edge_list = Int[]
@@ -201,7 +203,7 @@ function read_stsp(filename::String)
     graph_edges[k] = sort(graph_edges[k])
   end
   println("✓")
-  return graph_nodes, graph_edges
+  return graph_nodes, graph_edges, graph_weight
 end
 
 """Affiche un graphe étant données un ensemble de noeuds et d'arêtes.
