@@ -27,7 +27,7 @@ function add_node!(graph::Graph{T}, node::Node{T}) where T
 end
 
 """Adds an edge to the graph."""
-function add_edge!(graph::Graph{T} where T, edge::Edge{S} where S) 
+function add_edge!(graph::Graph{T} where T, edge::Edge{T} where T) 
   push!(graph.edges, edge)
   graph
 end
