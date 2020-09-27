@@ -1,39 +1,33 @@
-import Base.show
-
-"""Type abstrait dont d'autres types d'arrete dériveront."""
+"""Abstract type from which other types of edges will derive."""
 abstract type AbstractEdge{T} end
 
+"""Type representing an edge as a set of nodes.
 
+Exemple :
+    node1 = Node("Joe", 3.14)
+    node2 = Node("Steve", exp(1))
+    E = Edge(2, [node1, node2])
 
-"""Type représentant les arretes d'un graphe.
-
-Exemple:
-
-        edge = Edge("James", (Node1,Node2), weight)
-
-
+Be careful, all nodes must have data of the same type.
 """
 mutable struct Edge{T} <: AbstractEdge{T}
   name::String
-  data::Tuple{Node{T},Node{T}}
-  weight::Int
+  weight::Float64  
+  adjacentnodes::Tuple{Node{T},Node{T}}
 end
 
-# on présume que tous les arretes dérivant d'AbstractEdge
-# posséderont des champs `name` et `data` et 'weight'.
 
-"""Renvoie le nom de l'arrête."""
-name(edge::AbstractEdge) = edge.name
+# we assume that all edges deriving from AbstractEdge
+# will have `weight` and` nodes` fields.
 
-"""Renvoie les noeuds definissant l'arrête."""
-data(edge::AbstractEdge) = edge.data
-
-"""Renvoie le poids de l'arrête."""
+"""Returns the weight of the edge."""
 weight(edge::AbstractEdge) = edge.weight
 
+"""Returns the adjacent nodes of the edge."""
+adjacentnodes(edge::AbstractEdge) = edge.adjacentnodes
 
-"""Affiche un noeud."""
-function show(edge::AbstractEdge)
-  println("Edge ", name(edge), ", Nodes: ", data(edge),
-          ", Weight:", weight(edge))
+
+"""Display an edge"""
+function show(edge::Edge)
+  println("Between Node ", name(edge.adjacentnodes[1]), "and Node ", name(edge.adjacentnodes[2]), " edge weight ", edge.weight)
 end

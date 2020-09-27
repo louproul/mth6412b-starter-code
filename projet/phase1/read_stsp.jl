@@ -92,11 +92,8 @@ end
 
 """Analyse un fichier .tsp et renvoie l'ensemble des arêtes sous la forme d'un tableau."""
 function read_edges(header::Dict{String}{String}, filename::String)
-
+  edges_weight = Dict{Tuple{Int64,Int64}}{Float64}()
   edges = []
-
-  # For each edge (i,j), we associate a weight 
-  edges_weight = Dict{Tuple{Int,Int}}{Any}()
 
   edge_weight_format = header["EDGE_WEIGHT_FORMAT"]
   known_edge_weight_formats = ["FULL_MATRIX", "UPPER_ROW", "LOWER_ROW",
@@ -134,6 +131,7 @@ function read_edges(header::Dict{String}{String}, filename::String)
 
           for j = start : start + n_on_this_line - 1
             n_edges = n_edges + 1
+            weight = parse(Int64, data[j+1])
             if edge_weight_format in ["UPPER_ROW", "LOWER_COL"]
               edge = (k+1, i+k+2)
             elseif edge_weight_format in ["UPPER_DIAG_ROW", "LOWER_DIAG_COL"]
@@ -147,8 +145,8 @@ function read_edges(header::Dict{String}{String}, filename::String)
             else
               warn("Unknown format - function read_edges")
             end
-            edges_weight[edge] = data[j+1]
             push!(edges, edge)
+            edges_weight[edge] = parse(Float64, data[j+1])
             i += 1
           end
 
