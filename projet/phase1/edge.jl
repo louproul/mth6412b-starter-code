@@ -29,5 +29,5 @@ adjacentnodes(edge::AbstractEdge) = edge.adjacentnodes
 
 """Display an edge"""
 function show(edge::Edge)
-  println("Between Node ", name(edge.adjacentnodes[1]), "and Node ", name(edge.adjacentnodes[2]), " edge weight ", edge.weight)
+  println("Between Node ", name(edge.adjacentnodes[1]), " and Node ", name(edge.adjacentnodes[2]), " edge weight ", edge.weight)
 end
