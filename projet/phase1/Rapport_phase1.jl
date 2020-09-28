@@ -83,25 +83,25 @@ md" On ajoute les noeuds et les arrête à notre objet \"my_graph\" en itérant 
 
 # ╔═╡ 279400c0-0104-11eb-30f2-23b812fd577f
 begin
-T = valtype(graph_nodes)
-for k = 1 : length(graph_edges)
-	if isempty(graph_nodes)
-		new_node1 = Node{T}(string(k),T())
-	else
-    	new_node1 = Node(string(k),graph_nodes[k])
-	end
-    add_node!(my_graph, new_node1)
-    for j in graph_edges[k]
+	T = valtype(graph_nodes)
+	for k = 1 : length(graph_edges)
 		if isempty(graph_nodes)
-		new_node2 = Node{T}(string(j),T())
+			new_node1 = Node{T}(string(k),T())
 		else
-    	new_node2 = Node(string(j),graph_nodes[j])
+    		new_node1 = Node(string(k),graph_nodes[k])
 		end
-        edge_name = "("*string(k)*","*string(j)*")"
-        new_edge = Edge(edge_name, edges_weight[k,j], (new_node1 , new_node2))
-        add_edge!(my_graph, new_edge)
-    end
-end
+    	add_node!(my_graph, new_node1)
+    	for j in graph_edges[k]
+			if isempty(graph_nodes)
+				new_node2 = Node{T}(string(j),T())
+			else
+    			new_node2 = Node(string(j),graph_nodes[j])
+			end
+        	edge_name = "("*string(k)*","*string(j)*")"
+        	new_edge = Edge(edge_name, edges_weight[k,j], (new_node1 , new_node2))
+        	add_edge!(my_graph, new_edge)
+    	end
+	end
 end
 
 # ╔═╡ 5e15f120-01a5-11eb-0580-b7ac4d750571
