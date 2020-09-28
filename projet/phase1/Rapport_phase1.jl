@@ -32,7 +32,7 @@ md" On pointe vers un des fichier sources de façon à ce que le code fonctionne
 
 # ╔═╡ 07312170-00d0-11eb-2214-5f83463faa58
 begin
-	filename_stsp = "bayg29.tsp"
+	filename_stsp = "brazil58.tsp"
 	root = normpath(joinpath(@__FILE__,"..","..",".."))
 	filepath_to_stsp = "instances\\stsp"
 	filepath = joinpath(root, filepath_to_stsp) 
@@ -79,20 +79,29 @@ md" Création de notre graph vide. On lui donne le nom du fichier source (.tsp)"
 my_graph = Graph(filename_stsp,Node{Array{Float64,1}}[],Edge{Array{Float64,1}}[])
 
 # ╔═╡ 5b02bcee-0111-11eb-1e5d-bd361582a078
-md" On ajoute les noeuds et les arrête à notre objet \"my_graph\" en itérant sur les données récoltées du fichier"
+md" On ajoute les noeuds et les arrête à notre objet \"my_graph\" en itérant sur les données récoltées du fichier. S'il n'y a pas de noeuds, on créee des noeuds vides. "
 
 # ╔═╡ 279400c0-0104-11eb-30f2-23b812fd577f
+begin
+T = valtype(graph_nodes)
 for k = 1 : length(graph_edges)
-	#T = valtype(graph_nodes)
-	#node = Node{T}(string(k),graph_nodes[k])
-    new_node1 = Node(string(k),graph_nodes[k])
+	if isempty(graph_nodes)
+		new_node1 = Node{T}(string(k),T())
+	else
+    	new_node1 = Node(string(k),graph_nodes[k])
+	end
     add_node!(my_graph, new_node1)
     for j in graph_edges[k]
-        new_node2 = Node(string(j),graph_nodes[j])
+		if isempty(graph_nodes)
+		new_node2 = Node{T}(string(j),T())
+		else
+    	new_node2 = Node(string(j),graph_nodes[j])
+		end
         edge_name = "("*string(k)*","*string(j)*")"
         new_edge = Edge(edge_name, edges_weight[k,j], (new_node1 , new_node2))
         add_edge!(my_graph, new_edge)
     end
+end
 end
 
 # ╔═╡ 5e15f120-01a5-11eb-0580-b7ac4d750571
@@ -110,7 +119,7 @@ my_graph
 # ╠═5f71b5d0-00cf-11eb-067c-6f7fafd83b3f
 # ╟─893616e0-0110-11eb-1b68-5fada7e38619
 # ╠═07312170-00d0-11eb-2214-5f83463faa58
-# ╠═6b944bf0-01a3-11eb-08ea-bbefa548a79f
+# ╟─6b944bf0-01a3-11eb-08ea-bbefa548a79f
 # ╟─dc9d0b7e-0116-11eb-184b-3fb24615e939
 # ╟─0015dff0-01a4-11eb-0f4a-c941a490b248
 # ╟─f2d95b00-01a3-11eb-1ccb-175cad25aefb
