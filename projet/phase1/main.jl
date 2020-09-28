@@ -2,13 +2,13 @@ using Markdown
 using InteractiveUtils
 
 include("node.jl")
-include("graph.jl")
 include("edge.jl")
+include("graph.jl")
 include("read_stsp.jl")
 
 """Access to data files"""
 
-filename_stsp = "brazil58.tsp"
+filename_stsp = "bayg29.tsp"
 root = normpath(joinpath(@__FILE__,"..","..",".."))
 filepath_to_stsp = "instances\\stsp"
 filepath = joinpath(root, filepath_to_stsp) 
