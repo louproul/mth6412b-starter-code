@@ -4,9 +4,9 @@ abstract type AbstractEdge{T} end
 """Type representing an edge as a set of nodes.
 
 Exemple :
-    node1 = Node("Joe", 3.14)
-    node2 = Node("Steve", exp(1))
-    E = Edge(2, [node1, node2])
+    node1 = Node("1", 3.14)
+    node2 = Node("2", exp(1))
+    E = Edge("(1,2)", edges_weight[1,2], (node1 , node2))
 
 Be careful, all nodes must have data of the same type.
 """
