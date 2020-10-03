@@ -35,20 +35,21 @@ A₀ = Set()
 k=0
 A = sort(Ex_Graph.edges, by = x -> x.weight)
 
-Connex_Node = Dict{Node,Tuple{String, Set{Any}}}()
+Connex_Node = Dict{String,Tuple{String, Set{Any}}}()
 
 for node in Ex_Graph.nodes
-  Connex_Node[node] = (node.name, Set([node])) 
+  Connex_Node[node.name] = (node.name, Set([node])) 
 end
 
 for a in A
-  if Connex_Node[a.adjacentnodes[1]][1] != Connex_Node[a.adjacentnodes[2]][1]
+  if Connex_Node[a.adjacentnodes[1].name][1] != Connex_Node[a.adjacentnodes[2].name][1]
     union!(A₀, Set([a]))
-    New_Set = union(Connex_Node[a.adjacentnodes[1]][2],Connex_Node[a.adjacentnodes[2]][2])
-    New_Set_Name = Connex_Node[a.adjacentnodes[1]][1]
+    New_Set = union(Connex_Node[a.adjacentnodes[1].name][2],
+    Connex_Node[a.adjacentnodes[2].name][2])
+    New_Set_Name = Connex_Node[a.adjacentnodes[1].name][1]
     
     for element in New_Set
-      Connex_Node[element] =  (New_Set_Name, New_Set)
+      Connex_Node[element.name] =  (New_Set_Name, New_Set)
     end
   end
   if length(A₀) + 1 == length(Ex_Graph.nodes)
@@ -56,4 +57,7 @@ for a in A
   end
 end
 
+#plot_subgraph(Ex_Graph, A₀) 
+
 print(sum(x->x.weight,A₀))
+
