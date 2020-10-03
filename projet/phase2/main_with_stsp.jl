@@ -18,25 +18,8 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 
 Main_Graph = Graph("Graph_"*header["NAME"], Node{Array{Float64,1}}[], Edge{Array{Float64,1}}[]) 
 
-T = valtype(graph_nodes)
-for k = 1 : length(graph_edges)
-    if isempty(graph_nodes)
-		new_node1 = Node{T}(string(k),T())
-	else
-   		new_node1 = Node(string(k),graph_nodes[k])
-	end
-    add_node!(Main_Graph, new_node1)
-    for j in graph_edges[k]
-        if isempty(graph_nodes)
-	    	new_node2 = Node{T}(string(j),T())
-    	else
-		    new_node2 = Node(string(j),graph_nodes[j])
-	    end
-        edge_name = "("*string(k)*","*string(j)*")"
-        new_edge = Edge(edge_name, edges_weight[k,j], (new_node1 , new_node2))
-        add_edge!(Main_Graph, new_edge)
-    end
-end
+
+create_graph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
 A₀ = Set()
 k=0
@@ -63,5 +46,9 @@ for a in A
         break
   end
 end
+
+
+#plot_subgraph(Main_Graph, A₀)
+#savefig("tree_bayg29.pdf")
 
 print(sum(x->x.weight,A₀))
