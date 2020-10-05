@@ -3,7 +3,7 @@ include("../edge.jl")
 include("../graph.jl")
 include("../read_stsp.jl")
 
-filename_stsp = "brazil58.tsp"
+filename_stsp = "bayg29.tsp"
 root = normpath(joinpath(@__FILE__,"..","..",".."))
 filepath_to_stsp = "instances\\stsp"
 filepath = joinpath(root, filepath_to_stsp) 
@@ -21,11 +21,12 @@ Main_Graph = Graph("Graph_"*header["NAME"], Node{Array{Float64,1}}[], Edge{Array
 
 create_graph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
+
 A₀ = Set()
 k=0
 A = sort(Main_Graph.edges, by = x -> x.weight)
 
-Connex_Node = Dict{String,Tuple{String, Set{Any}}}()
+Connex_Node = Dict{String,Tuple{String, Set{Node{Vector{Float64}}}}}()
 
 for node in Main_Graph.nodes
   Connex_Node[node.name] = (node.name, Set([node])) 
