@@ -1,4 +1,6 @@
 import Base.show
+include("node.jl")
+include("edge.jl")
 
 """Type abstrait dont d'autres types de graphes dériveront."""
 abstract type AbstractGraph{T} end
@@ -19,6 +21,9 @@ mutable struct Graph{T} <: AbstractGraph{T}
   nodes::Vector{Node{T}}
   edges::Vector{Edge{T}}
 end
+
+"""Let's you instanciate an empty graph"""
+Graph{T}() where T = Graph("", Node{T}[], Edge{T}[]) 
 
 """Adds a node to the graph."""
 function add_node!(graph::Graph{T}, node::Node{T}) where T
