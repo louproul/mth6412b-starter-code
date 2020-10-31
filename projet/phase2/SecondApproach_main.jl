@@ -6,6 +6,7 @@ include("../edge.jl")
 include("../graph.jl")
 include("../read_stsp.jl")
 
+
 """Data structure representing disjoint sets
 Exemple :
     parent = Dict("1"=> "2", "2" => "2") each node points to its parent
@@ -18,8 +19,8 @@ mutable struct DisjointSets
     rank::Dict{Any,Any}
 end
 
-"""The function Initialize is used to create a tree for each node which has just one element and zero rank"""
-function Initialize(node::Node{T}, DS::DisjointSets) where T
+"""The function Make_set is used to create a tree for each node which has just one element and zero rank"""
+function Make_set(node::Node{T}, DS::DisjointSets) where T
     DS.parent[node.name] = node.name
     DS.rank[node.name] = 0
 end
@@ -48,6 +49,31 @@ function Union_sets(Root_node1::String, Root_node2::String, DS::DisjointSets)
 end
 
 
+"""The kruskal algorithm function"""
+function Kruskal(Graph::Graph{T},Min_Span_Tree::Array{Edge{Array{Float64,1}},1},A::Set{Any}, W::Float64) where T
+
+    DS = DisjointSets(Dict(), Dict())
+
+    for node in Graph.nodes
+        Make_set(node, DS)
+    end
+    Edge_sort = sort(Graph.edges, by = x -> x.weight)
+    for edge in Edge_sort
+        root1 = find_set(edge.adjacentnodes[1].name, DS)
+        root2 = find_set(edge.adjacentnodes[2].name, DS)
+        if root1 != root2
+            push!(Min_Span_Tree, edge)
+            union!(A, Set([edge]))
+            W = W + edge.weight
+            Union_sets(root1, root2, DS)
+        end
+    end
+    return A,W
+end
+
+
+
+
 
 """The main kruskal algorithm steps"""
 
@@ -70,25 +96,14 @@ Main_Graph = Graph("Graph_"*header["NAME"], Node{Array{Float64,1}}[], Edge{Array
 create_graph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
 
-DS = DisjointSets(Dict(), Dict())
-Min_Span_Tree = Edge{Array{Float64,1}}[]
-W = 0
-A₀ = Set()
 
-for node in Main_Graph.nodes
-    Initialize(node, DS)
-end
-Edge_sort = sort(Main_Graph.edges, by = x -> x.weight)
-for edge in Edge_sort
-    root1 = find_set(edge.adjacentnodes[1].name, DS)
-    root2 = find_set(edge.adjacentnodes[2].name, DS)
-    if root1 != root2
-        push!(Min_Span_Tree, edge)
-        union!(A₀, Set([edge]))
-        W = W + edge.weight
-        Union_sets(root1, root2, DS)
-    end
-end
+#DS = DisjointSets(Dict(), Dict())
+Min_Span_Tree = Edge{Array{Float64,1}}[]
+W = 0.0
+A = Set()
+
+A,W = Kruskal(Main_Graph,Min_Span_Tree,A,W)
+
 println("The total weight of the solution is: ", W)
 
-plot_subgraph(Main_Graph, A₀) 
+plot_subgraph(Main_Graph, A) 
