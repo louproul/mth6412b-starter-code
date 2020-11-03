@@ -66,7 +66,8 @@ function Prime_Algo(graph::MarkedGraph{T}, edges_weight::Dict{Tuple{Int64,Int64}
             end
         end                
     end
-    MST_Graph = MarkedGraph("MSTGraph_"*header["NAME"], MST, MarkedEdge{Array{Float64,1}}[]) 
+    #*header["NAME"]
+    MST_Graph = MarkedGraph("MSTGraph_", MST, MarkedEdge{Array{Float64,1}}[]) 
     for node in MST[2:end]
         edge_name = "("*node.parent.name*","*node.name*")"
         new_edge = MarkedEdge(edge_name, node.min_weight, (node.parent , node))
