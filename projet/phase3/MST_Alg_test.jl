@@ -74,7 +74,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -92,7 +92,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -109,7 +109,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -127,7 +127,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -145,7 +145,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph,  Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -163,7 +163,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -181,7 +181,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -200,7 +200,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -219,7 +219,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -238,7 +238,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -257,7 +257,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -276,7 +276,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -295,7 +295,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
@@ -314,7 +314,7 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 W2, Kruskal_MST = Kruskal(Main_Graph)
 
 @test W1 == W2
