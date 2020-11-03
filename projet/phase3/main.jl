@@ -32,7 +32,7 @@ Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[]
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
 """Calculating the minimum spanning tree using Prim algorithm"""
-W1, Prime_MST = Prime_Algo(Main_Graph, edges_weight, Main_Graph.nodes[1])
+W1, Prime_MST = Prime_Algo(Main_Graph, Main_Graph.nodes[1])
 println("The weight of MST using Prim Algorithm: ", W1)
 plot_markedgraph(Prime_MST)
 
