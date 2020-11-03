@@ -38,7 +38,7 @@ end
 is_empty(q::PriorityQueue) = length(q.items) == 0
 
 """Prime Algorithm function """
-function Prime_Algo(graph::MarkedGraph{T}, edges_weight::Dict{Tuple{Int64,Int64},Float64}, source::MarkedNode{T}) where T
+function Prime_Algo(graph::MarkedGraph{T}, source::MarkedNode{T}) where T
     W = 0.0
     PQ = PriorityQueue(MarkedNode{Array{Float64,1}}[])
     MST = MarkedNode{Array{Float64,1}}[]    
@@ -51,6 +51,11 @@ function Prime_Algo(graph::MarkedGraph{T}, edges_weight::Dict{Tuple{Int64,Int64}
         enqueue!(PQ, U)
     end
     
+    edges_weight = Dict{Tuple{Int64,Int64}}{Float64}()
+    for edge in graph.edges
+        edges_weight[parse(Int64, edge.adjacentnodes[1].name) , parse(Int64, edge.adjacentnodes[2].name)]=edge.weight
+        edges_weight[parse(Int64, edge.adjacentnodes[2].name) , parse(Int64, edge.adjacentnodes[1].name)]=edge.weight
+    end
     
     while !is_empty(PQ)
         V = dequeue!(PQ)
@@ -74,6 +79,7 @@ function Prime_Algo(graph::MarkedGraph{T}, edges_weight::Dict{Tuple{Int64,Int64}
     end    
     return W, MST_Graph
 end
+
 
 
 
