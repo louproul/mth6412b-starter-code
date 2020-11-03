@@ -61,10 +61,10 @@ md" #### Question théorique: voir pièce jointe à la fin du rappport"
 md" #### Notre implémentation de l'algorithme de Prim"
 
 # ╔═╡ e98c0d90-1d6e-11eb-0a42-0dd54ba39a2e
-display("Prime_Alg.jl",41,76)
+display("Prime_Alg.jl",41,82)
 
 # ╔═╡ 368cbade-1d6f-11eb-1a84-1d6436093d54
-md" La fonction Prim_Algo dans le fichier *Prime\_Alg.jl* calcule l'arbre de recouvrement minimal d'un graph et le poids total. Notre classe graphe ne contient pas un dictionnaire permettant facilement d'associer le poids d'une arrête à ses deux noeuds. Nous fournissons donc ce dictionnaire à la fonction Prim. Le noeud source sera entré dans la file de priorité avec un poids de 0 et tous les autres noeuds avec un poids Inf. Par la suite la boucle principale enlèvera le noeud avec un poids associé minimal jusqu'à ce que la file soit vide. Ce qui correspond à ajouter un arrête légère à notre sous-arbre de recouvrement minimum. On met à jour le poids des noeuds isolés en fonction du dernier noeud ajouté à l'arbre de recouvrement minimal, uniquement si cela réduit son poids. À la fin on crée un graph pour représenter l'arbre de recouvrement minimal."
+md" La fonction Prim_Algo dans le fichier *Prime\_Alg.jl* calcule l'arbre de recouvrement minimal d'un graph et le poids total. Le noeud source sera entré dans la file de priorité avec un poids de 0 et tous les autres noeuds avec un poids Inf. Par la suite la boucle principale enlèvera le noeud avec un poids associé minimal jusqu'à ce que la file soit vide. Ce qui correspond à ajouter un arrête légère à notre sous-arbre de recouvrement minimum. On met à jour le poids des noeuds isolés en fonction du dernier noeud ajouté à l'arbre de recouvrement minimal, uniquement si cela réduit son poids. À la fin on crée un graph pour représenter l'arbre de recouvrement minimal."
 
 # ╔═╡ 5a77b380-1d77-11eb-02bb-4350c2c48959
 md" Testons note implémentation sur l'exemple des notes de cours"
@@ -109,7 +109,7 @@ my_edge_weight[(8,9)]=7.0
 end
 
 # ╔═╡ b1d3456e-1d7e-11eb-3187-ef543d2c6dda
-W1, Prime_MST = Prime_Algo(Ex_Graph1, my_edge_weight, Ex_Graph1.nodes[1])
+W1, Prime_MST = Prime_Algo(Ex_Graph1, Ex_Graph1.nodes[1])
 
 # ╔═╡ e7ae3290-1d7e-11eb-0e4d-6bee23299e77
 md"The weight of MST using Prim Algorithm: "
