@@ -8,6 +8,7 @@ mutable struct MarkedNode{T} <: AbstractNode{T}
     visited::Bool
     min_weight::Float64
     parent::Union{MarkedNode{T},Nothing}
+    adjacents::Dict{Any,Any}
 end
 
 
@@ -19,7 +20,14 @@ function MarkedNode(data::T; name::String="", min_weight::Float64=Inf) where T
     MarkedNode(name, data, false, max(0.0, min_weight), nothing)
 end
 
-"""function to set the visited attribute of the Marknode """
+"""Adds a adjacent Markednode to the node."""
+function add_adj_node!(node::MarkedNode{T}, adj::MarkedNode{T}, weight::Float64) where T
+    node.adjacents[adj.name] = weight
+  node
+end
+
+
+"""function to set the visited attribute of the Markednode """
 function set_visited!(node::MarkedNode)
     node.visited = true
     node
