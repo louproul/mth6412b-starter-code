@@ -34,19 +34,18 @@ function create_MarkedGraph!(graph::MarkedGraph, graph_nodes::Dict{Int64,Vector{
     T = valtype(graph_nodes)
     for k = 1 : length(graph_edges)
         if isempty(graph_nodes)
-            new_node1 = MarkedNode{T}(string(k), T(), false, Inf, nothing)
+            new_node = MarkedNode{T}(string(k), T(), false, Inf, nothing, Dict())
         else
-            new_node1 = MarkedNode(string(k), graph_nodes[k], false, Inf, nothing)
+            new_node = MarkedNode(string(k), graph_nodes[k], false, Inf, nothing, Dict())
         end
-        add_markednode!(graph, new_node1)
+        add_markednode!(graph, new_node)
+    end
+    for k = 1 : length(graph_edges)
         for j in graph_edges[k]
-            if isempty(graph_nodes)
-                new_node2 = MarkedNode{T}(string(j), T(), false, Inf, nothing)
-            else
-                new_node2 = MarkedNode(string(j), graph_nodes[j], false, Inf, nothing)
-            end
             edge_name = "("*string(k)*","*string(j)*")"
-            new_edge = MarkedEdge(edge_name, edges_weight[k,j], (new_node1 , new_node2))
+            add_adj_node!(graph.nodes[k], graph.nodes[j], edges_weight[k,j])
+            add_adj_node!(graph.nodes[j], graph.nodes[j], edges_weight[k,j])
+            new_edge = MarkedEdge(edge_name, edges_weight[k,j], (graph.nodes[k] , graph.nodes[j]))
             add_markededge!(graph, new_edge)
         end
     end
