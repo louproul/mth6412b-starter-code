@@ -43,11 +43,13 @@ function Prime_Algo(graph::MarkedGraph{T}, source::MarkedNode{T}) where T
     PQ = PriorityQueue(MarkedNode{Array{Float64,1}}[])
     MST = MarkedNode{Array{Float64,1}}[]    
     
-    for U in graph.nodes
+    for node in graph.nodes
+        U = deepcopy(node)
         if U.name == source.name
             set_min_weight!(U, 0.0)
             set_parent!(U, U)
         end
+        empty!(U.adjacents)
         enqueue!(PQ, U)
     end
     
@@ -76,6 +78,7 @@ function Prime_Algo(graph::MarkedGraph{T}, source::MarkedNode{T}) where T
     for node in MST[2:end]
         edge_name = "("*node.parent.name*","*node.name*")"
         new_edge = MarkedEdge(edge_name, node.min_weight, (node.parent , node))
+        add_adj_node!(node.parent, node, node.min_weight)
         add_markededge!(MST_Graph, new_edge)
     end    
     return W, MST_Graph
