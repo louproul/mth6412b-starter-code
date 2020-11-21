@@ -79,6 +79,7 @@ function Prime_Algo(graph::MarkedGraph{T}, source::MarkedNode{T}) where T
         edge_name = "("*node.parent.name*","*node.name*")"
         new_edge = MarkedEdge(edge_name, node.min_weight, (node.parent , node))
         add_adj_node!(node.parent, node, node.min_weight)
+        add_adj_node!(node, node.parent, node.min_weight)
         add_markededge!(MST_Graph, new_edge)
     end    
     return W, MST_Graph
