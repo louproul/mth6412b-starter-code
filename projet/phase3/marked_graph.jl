@@ -44,7 +44,7 @@ function create_MarkedGraph!(graph::MarkedGraph, graph_nodes::Dict{Int64,Vector{
         for j in graph_edges[k]
             edge_name = "("*string(k)*","*string(j)*")"
             add_adj_node!(graph.nodes[k], graph.nodes[j], edges_weight[k,j])
-            add_adj_node!(graph.nodes[j], graph.nodes[j], edges_weight[k,j])
+            add_adj_node!(graph.nodes[j], graph.nodes[k], edges_weight[k,j])
             new_edge = MarkedEdge(edge_name, edges_weight[k,j], (graph.nodes[k] , graph.nodes[j]))
             add_markededge!(graph, new_edge)
         end
