@@ -72,3 +72,16 @@ function plot_markedgraph(graph::MarkedGraph)
   
     fig
   end
+
+# function to get the weight of a particular edge with its name
+function graph_edgeweight(Graph::MarkedGraph, node1::MarkedNode, node2::MarkedNode)
+    weight = 0.0
+    try
+        name1 = "("*node1.name*","*node2.name*")"
+        weight = Graph.edges[findfirst(x->x.name == name1, Graph.edges)].weight
+    catch
+        name2 = "("*node2.name*","*node1.name*")"
+        weight = Graph.edges[findfirst(x->x.name == name2, Graph.edges)].weight
+    end
+    return weight
+end
