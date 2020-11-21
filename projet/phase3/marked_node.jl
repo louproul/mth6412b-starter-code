@@ -14,7 +14,7 @@ end
 
 min_weight(node::AbstractNode) = node. min_weight
 parent(node::AbstractNode) = node. parent
-
+adjacent(node::MarkedNode) = sort(collect(node.adjacents), by=x->x[2])
 
 function MarkedNode(data::T; name::String="", min_weight::Float64=Inf) where T
     MarkedNode(name, data, false, max(0.0, min_weight), nothing)
