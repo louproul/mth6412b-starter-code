@@ -13,7 +13,7 @@ function Calc_step(n::Int64, k::Int64, period::Int64, period_dur::Float64, perio
     t = 1.0
     if method ==1
         if period > 1
-            tᵏ = t/2^(period-1)
+            t = t/2^(period-1)
         end
     
         if period_doubled 
@@ -79,7 +79,7 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
     
         # step(2): initializing the temporary graph and selecting the root vert
  
-        Lᵏ,Tᵏ = Minimum_1Tree(temp_Graph,1, source)
+        Lᵏ,Tᵏ = Minimum_1Tree(temp_Graph, MST_Algorithm , source)
     
         # step 3
         wᵏ⁻¹ = wᵏ
@@ -111,7 +111,7 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
         # step 8: updating the value of Πᵏ
         Πᵏ = Πᵏ.+ tᵏ.*vᵏ
         # update weight of edges
-        temp_Graph = deepcopy(Main_Graph)
+        # temp_Graph = deepcopy(Main_Graph)
         for edge in temp_Graph.edges
             i = parse(Int, edge.adjacentnodes[1].name)
             j = parse(Int, edge.adjacentnodes[2].name)
