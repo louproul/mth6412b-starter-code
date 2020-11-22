@@ -56,12 +56,5 @@ function Calc_source(Graph::MarkedGraph{T}) where T
 end
 
 
-# function to calculate degree of nodes in a graph/tree
-function compute_deg(Tree::MarkedGraph{T}) where T
-    n = length(Tree.nodes)
-    dᵏ = zeros(n)
-    for i in 1:n
-        dᵏ[i]=length(adjacent(Tree.nodes[i]))
-    end
-    return dᵏ
-end
+
+
