@@ -10,8 +10,11 @@ include("../phase3/kruskal_Alg.jl")
 
 
 function Minimum_1Tree(Graph::MarkedGraph{T},method::Int64, start_node::MarkedNode{T}) where T
-    source = deepcopy(start_node)
+    #source = deepcopy(start_node)
+
     temp_Graph = deepcopy(Graph)
+    source = temp_Graph.nodes[findfirst(x->x.name==start_node.name, temp_Graph.nodes)]
+
     # removing the node from the graph
     deleteat!(temp_Graph.nodes, findall(x->x.name==source.name, temp_Graph.nodes))
     # removing the esges connected to that node
@@ -33,6 +36,7 @@ function Minimum_1Tree(Graph::MarkedGraph{T},method::Int64, start_node::MarkedNo
         node = one_tree.nodes[findfirst(x->x.name == source_adj[i][1], one_tree.nodes)]
         edge_name =  "("*source.name*","*node.name*")"
         new_edge = MarkedEdge(edge_name, source_adj[i][2], (source , node))
+        W = W + new_edge.weight
         add_adj_node!(source, node, source_adj[i][2])
         add_adj_node!(node, source, source_adj[i][2])
         add_markededge!(one_tree, new_edge)
