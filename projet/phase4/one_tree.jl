@@ -9,16 +9,8 @@ include("../phase3/Prime_Alg.jl")
 include("../phase3/kruskal_Alg.jl")
 
 
-function Minimum_1Tree(Graph::MarkedGraph{T},method::Int64) where T
-    second_NN = Dict()    # second nearest neighbours of graph nodes
-    for node in Graph.nodes
-        second_NN[node.name] = adjacent(node)[2][2]
-    end
-    
-    #finding the root vertex (that has the longest second nearest neighbor distance)
-    index = sort(collect(second_NN), by=x->x[2], rev=true)[1][1]
-    source = deepcopy(Graph.nodes[findfirst(x->x.name == index, Graph.nodes)])
-    
+function Minimum_1Tree(Graph::MarkedGraph{T},method::Int64, start_node::MarkedNode{T}) where T
+    source = deepcopy(start_node)
     temp_Graph = deepcopy(Graph)
     # removing the node from the graph
     deleteat!(temp_Graph.nodes, findall(x->x.name==source.name, temp_Graph.nodes))
@@ -46,5 +38,19 @@ function Minimum_1Tree(Graph::MarkedGraph{T},method::Int64) where T
         add_markededge!(one_tree, new_edge)
     end
     add_markednode!(one_tree, source)
-    return W, one_tree, source
+    return W, one_tree
+end
+
+
+
+# function to calculate source (the vertex which has the longest second nearest neighbor distance)
+function Calc_source(Graph::MarkedGraph{T}) where T
+    second_NN = Dict()    # second nearest neighbours of graph nodes
+    for node in Graph.nodes
+        second_NN[node.name] = adjacent(node)[2][2]
+    end
+
+    index = sort(collect(second_NN), by=x->x[2], rev=true)[1][1]
+    source = Graph.nodes[findfirst(x->x.name == index, Graph.nodes)]
+    return source
 end
