@@ -54,14 +54,14 @@ function RSL_TSP(Graph::MarkedGraph{T}, Source::MarkedNode{T}) where T
         empty!(TSP_nodes[i+1].adjacents)
         edge_name = "("*TSP_nodes[i].name*","*TSP_nodes[i+1].name*")"
         # finding the weight of edge in the graph
-        edge_weight = graph_edgeweight(Main_Graph,TSP_nodes[i],TSP_nodes[i+1])
+        edge_weight = graph_edgeweight(Graph,TSP_nodes[i],TSP_nodes[i+1])
         W = W + edge_weight
         new_edge = MarkedEdge(edge_name, edge_weight, (TSP_nodes[i] , TSP_nodes[i+1]))   
         add_adj_node!(TSP_nodes[i], TSP_nodes[i+1], edge_weight)
         add_markededge!(TSP_Graph, new_edge)
     end
     edge_name = "("*TSP_nodes[length(TSP_nodes)].name*","*TSP_nodes[1].name*")"
-    edge_weight = graph_edgeweight(Main_Graph,TSP_nodes[1],TSP_nodes[length(TSP_nodes)])
+    edge_weight = graph_edgeweight(Graph,TSP_nodes[1],TSP_nodes[length(TSP_nodes)])
     W = W + edge_weight
     new_edge = MarkedEdge(edge_name, edge_weight, (TSP_nodes[length(TSP_nodes)] , TSP_nodes[1]))
     add_adj_node!(TSP_nodes[length(TSP_nodes)], TSP_nodes[1], edge_weight)
