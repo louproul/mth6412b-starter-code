@@ -162,7 +162,7 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
     println("tᵏ: ", tᵏ)
     if vᵏ == zeros(n)
         println("The algorithm converged successfully ")
-        println("The final weight of TSP: ", Lᵏ)
+        println("The final weight of TSP: ", final_weight)
     else
         println("The algorithm doesn't reach to a tour")
         println("The weight of the Bset found 1_Tree: ", final_weight)
