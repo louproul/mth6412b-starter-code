@@ -167,7 +167,7 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
         println("The algorithm doesn't reach to a tour")
         println("The weight of the Bset found 1_Tree: ", final_weight)
 
-        temp_Graph = deepcopy(Main_Graph)
+        temp_Graph = deepcopy(Graph)
         final_weight = Inf
         for edge in temp_Graph.edges
             i = parse(Int, edge.adjacentnodes[1].name)
