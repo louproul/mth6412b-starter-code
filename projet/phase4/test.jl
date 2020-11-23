@@ -34,5 +34,5 @@ create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
 source = Calc_source(Main_Graph)
 
-W1, TSP_Graph = HK_MST(Main_Graph, 1 , source)
+W1, TSP_Graph = HK_MST(Main_Graph, 2 , Main_Graph.nodes[1], 1)
 plot_markedgraph(TSP_Graph)
