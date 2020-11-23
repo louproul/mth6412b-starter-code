@@ -32,14 +32,21 @@ function Minimum_1Tree(Graph::MarkedGraph{T},method::Int64, start_node::MarkedNo
     #adding root to the minimum spaning tree
     source_adj = deepcopy(adjacent(source))
     empty!(source.adjacents)
-    for i in 1:2
-        node = one_tree.nodes[findfirst(x->x.name == source_adj[i][1], one_tree.nodes)]
-        edge_name =  "("*source.name*","*node.name*")"
-        new_edge = MarkedEdge(edge_name, source_adj[i][2], (source , node))
-        W = W + new_edge.weight
-        add_adj_node!(source, node, source_adj[i][2])
-        add_adj_node!(node, source, source_adj[i][2])
-        add_markededge!(one_tree, new_edge)
+    k = 0
+    for i in 1:length(one_tree.nodes)
+        if source_adj[i][1] != source.name
+            node = one_tree.nodes[findfirst(x->x.name == source_adj[i][1], one_tree.nodes)]
+            edge_name =  "("*source.name*","*node.name*")"
+            new_edge = MarkedEdge(edge_name, source_adj[i][2], (source , node))
+            W = W + new_edge.weight
+            add_adj_node!(source, node, source_adj[i][2])
+            add_adj_node!(node, source, source_adj[i][2])
+            add_markededge!(one_tree, new_edge)
+            k += 1
+        end
+        if k == 2
+            break
+        end
     end
     add_markednode!(one_tree, source)
     return W, one_tree
