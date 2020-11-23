@@ -17,9 +17,9 @@ include("kruskal_Alg.jl")
 P_Q = PriorityQueue(MarkedNode{Array{Float64,1}}[])
 @test is_empty(P_Q)
 
-new_node1 = MarkedNode("1", [10.0,20.0], false, 7.0, nothing)
-new_node2 = MarkedNode("2", [5.0,9.0], false, 2.0, nothing)
-new_node3 = MarkedNode("3", [8.0,25.0], false, 6.0, nothing)
+new_node1 = MarkedNode("1", [10.0,20.0], false, 7.0, nothing, Dict())
+new_node2 = MarkedNode("2", [5.0,9.0], false, 2.0, nothing, Dict())
+new_node3 = MarkedNode("3", [8.0,25.0], false, 6.0, nothing, Dict())
 
 enqueue!(P_Q, new_node1)
 enqueue!(P_Q, new_node2)
