@@ -1,4 +1,5 @@
 using InteractiveUtils
+using LinearAlgebra
 
 include("../phase3/marked_node.jl")
 include("../phase3/marked_edge.jl")
@@ -24,7 +25,11 @@ function Calc_step(n::Int64, k::Int64, period::Int64, period_dur::Float64, perio
     if method ==3
         k = max(1.0,k)
         t = t/sqrt(k)
-    end   
+    end 
+    
+    if method == 4
+        t = 1.0
+    end
     return t
 end
 
@@ -43,12 +48,13 @@ end
 
 # function for solving TSP with Held and Karp algorithm
 
-function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{T}, step::Int64) where T
+function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{T}, step::Int64, iteration::Int64) where T
+    n = length(Graph.nodes)
     iter = 0
     final_weight = 0.0
     final_TSP = nothing
+    final_Πᵏ = zeros(n)
     flag = 0
-    n = length(Graph.nodes)
     
     # initialization of variables
     W = -Inf
@@ -61,7 +67,8 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
     tᵏ = 1                # step size (a positive scalar)
     Lᵏ = Inf              # total weight of Tᵏ mimimum 1-Tree
     dᵏ = zeros(n)         # vector of node degrees
-    vᵏ = NaN*zeros(n)    
+    vᵏ = NaN*zeros(n)
+    vᵏ⁻¹ = NaN*zeros(n)    
 
     period = 1            # the number of periods     
     period_dur = n/2      # number of iterations in period
@@ -69,12 +76,12 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
 
     k = 0
     
-
+    best_iter = 0
     temp_Graph = deepcopy(Graph)        
     initial_edges = temp_Graph.edges
     initial_nodes = temp_Graph.nodes
     
-    while (iter == 0) || ((vᵏ !=zeros(n)) && (iter<1000) && abs(tᵏ)>1e-13 && (period_dur != 0.0))
+    while (iter == 0) || ((vᵏ !=zeros(n) && (iter< iteration) && abs(tᵏ)>1e-13 ))
     
         # step(2): initializing the temporary graph and selecting the root vert
  
@@ -82,20 +89,30 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
         
         # step 3
         wᵏ⁻¹ = wᵏ
-        wᵏ = Lᵏ-2 * sum(Πᵏ)
+        
+        wᵏ = Lᵏ-2*sum(Πᵏ)
     
         # step 4
         W_prev = W
-     #   println(" W_prev: ",W, " wᵏ: ", wᵏ, " wᵏ⁻¹: ", wᵏ⁻¹)
         W = max(W,wᵏ)
-     #   println("W: ",W)
         if W > W_prev
             final_TSP = Tᵏ
+            final_Πᵏ = Πᵏ
+            best_iter = iter
         end
     
         #step 5
+        vᵏ⁻¹ = vᵏ
         dᵏ = compute_deg(Tᵏ)
         vᵏ = dᵏ.-2
+        if iter ==0
+            vᵏ⁻¹ = vᵏ
+        end
+
+        # step 6
+        if norm(vᵏ)==0.0
+            break
+        end
     
         # step 7: choosing the step size
         if (period ==1)&& (wᵏ - wᵏ⁻¹ <0.0)&&(period_doubled == true)&&(k!=0)
@@ -119,15 +136,9 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
         elseif (period !=1)
             tᵏ = Calc_step(n, k, period, period_dur, period_doubled, step)
         end
-
-      #  println("period_doubled: ", period_doubled)
-      #  println("period: ", period)
-      #  println("period_dur: ", period_dur)
-      #  println("tᵏ: ", tᵏ)
-      #  println("k: ", k)
-      #  println("_______")
     
         # step 8: updating the value of Πᵏ
+        # Πᵏ = Πᵏ.+ tᵏ.*(0.7.*vᵏ+0.3.*vᵏ⁻¹)
         Πᵏ = Πᵏ.+ tᵏ.*vᵏ
         # update weight of edges
         temp_Graph = deepcopy(Graph)
@@ -144,6 +155,8 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
     for edge in final_TSP.edges
         final_weight = final_weight + edge.weight
     end
+    dᵏ = compute_deg(final_TSP)
+    final_weight = final_weight-sum(final_Πᵏ.*dᵏ)
     println("number of iteration: ", iter)
     println("period_dur: ", period_dur)
     println("tᵏ: ", tᵏ)
@@ -152,7 +165,25 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
         println("The final weight of TSP: ", Lᵏ)
     else
         println("The algorithm doesn't reach to a tour")
-        println("The weight of the current 1_Tree: ", Lᵏ)
+        println("The weight of the Bset found 1_Tree: ", final_weight)
+
+        temp_Graph = deepcopy(Main_Graph)
+        final_weight = Inf
+        for edge in temp_Graph.edges
+            i = parse(Int, edge.adjacentnodes[1].name)
+            j = parse(Int, edge.adjacentnodes[2].name)
+            edge.weight = edge.weight + final_Πᵏ[i]+ final_Πᵏ[j]
+        end
+
+        for start_node in temp_Graph.nodes
+            new_W , TSP_Graph = RSL_TSP(temp_Graph, start_node)
+            d = compute_deg(TSP_Graph)
+            new_W = new_W-sum(final_Πᵏ.*d)
+            if final_weight > new_W
+                final_weight = new_W
+                final_TSP = deepcopy(TSP_Graph)
+            end
+        end    
     end
-    return final_weight, final_TSP
+    return final_weight, final_TSP, final_Πᵏ
 end
