@@ -14,6 +14,7 @@ include("../phase3/kruskal_Alg.jl")
 
 include("one_tree.jl")
 include("TSP_hk.jl")
+include("TSP_rsl.jl")
 
 
 filename_stsp = "bayg29.tsp"
@@ -34,5 +35,9 @@ create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
 source = Calc_source(Main_Graph)
 
-W1, TSP_Graph = HK_MST(Main_Graph, 2 , Main_Graph.nodes[1], 1)
+W1, TSP_Graph, Π = HK_MST(Main_Graph, 1 , source, 3, 1000)
+println("The weight of TSP using Held, Karp algorithm: ", W1)
 plot_markedgraph(TSP_Graph)
+
+
+
