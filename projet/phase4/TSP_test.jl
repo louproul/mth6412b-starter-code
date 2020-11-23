@@ -50,6 +50,6 @@ for (key, value) in opt_tour
 
   W[i], TSP_Graph = RSL_TSP(Main_Graph, Main_Graph.nodes[1])
 
-  @test W[i] >= opt_tour["bayg29"]
+  @test W[i] >= value
 
 end
