@@ -46,8 +46,9 @@ end
 function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{T}, step::Int64) where T
     iter = 0
     final_weight = 0.0
+    final_TSP = nothing
     flag = 0
-    n = length(Main_Graph.nodes)
+    n = length(Graph.nodes)
     
     # initialization of variables
     W = -Inf
@@ -69,7 +70,7 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
     k = 0
     
 
-    temp_Graph = deepcopy(Main_Graph)        
+    temp_Graph = deepcopy(Graph)        
     initial_edges = temp_Graph.edges
     initial_nodes = temp_Graph.nodes
     
@@ -88,6 +89,9 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
      #   println(" W_prev: ",W, " wᵏ: ", wᵏ, " wᵏ⁻¹: ", wᵏ⁻¹)
         W = max(W,wᵏ)
      #   println("W: ",W)
+        if W > W_prev
+            final_TSP = Tᵏ
+        end
     
         #step 5
         dᵏ = compute_deg(Tᵏ)
@@ -126,7 +130,7 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
         # step 8: updating the value of Πᵏ
         Πᵏ = Πᵏ.+ tᵏ.*vᵏ
         # update weight of edges
-        temp_Graph = deepcopy(Main_Graph)
+        temp_Graph = deepcopy(Graph)
         for edge in temp_Graph.edges
             i = parse(Int, edge.adjacentnodes[1].name)
             j = parse(Int, edge.adjacentnodes[2].name)
@@ -137,7 +141,7 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
         k = k +1 
         iter += 1   
     end 
-    for edge in Tᵏ.edges
+    for edge in final_TSP.edges
         final_weight = final_weight + edge.weight
     end
     println("number of iteration: ", iter)
@@ -150,5 +154,5 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
         println("The algorithm doesn't reach to a tour")
         println("The weight of the current 1_Tree: ", Lᵏ)
     end
-    return final_weight, Tᵏ
+    return final_weight, final_TSP
 end
