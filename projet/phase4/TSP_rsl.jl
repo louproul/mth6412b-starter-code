@@ -18,7 +18,7 @@ function preorder_path(Tree::MarkedGraph{T}, V::MarkedNode{T}, Node_order::Array
     set_visited!(V)
     push!(Node_order, V)
     if !isempty(V.adjacents)
-        for adj in adjacent(V)
+        for adj in sort(adjacent(V))
             U = Tree.nodes[findfirst(x->x.name == string(adj[1]), Tree.nodes)]
             if U.visited == false
                 preorder_path(Tree, U, Node_order)
