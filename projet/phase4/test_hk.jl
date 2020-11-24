@@ -50,7 +50,11 @@ for (key, value) in opt_tour
   create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
   W1, TSP_Graph, Π = HK_MST(Main_Graph, 2 , Main_Graph.nodes[4], 4, 2000)
-  errors[key] = 100*(W1-value)/value
+  errors[key] = (W1-value)/value
 
 end
-println(errors)
+println("the error gap between the achived result and best found result is:")
+for (key, value) in opt_tour
+    println(key, " : ", errors[key])
+end
+    
