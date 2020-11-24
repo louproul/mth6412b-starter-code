@@ -168,7 +168,7 @@ for (key, value) in opt_tour
   Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
   create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-  W1, TSP_Graph, Π = HK_MST(Main_Graph, 1 , Main_Graph.nodes[4], 4, 2000)
+  W1, TSP_Graph, Π = HK_MST(Main_Graph, 1 , Main_Graph.nodes[4], 4, 1000)
   errors[key] = 100*(W1-value)/value
 
 end
