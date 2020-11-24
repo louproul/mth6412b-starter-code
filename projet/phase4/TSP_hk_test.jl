@@ -20,7 +20,7 @@ opt_tour = Dict()
 opt_tour["bayg29.tsp"]= 1610
 opt_tour["bays29.tsp"]= 2020
 opt_tour["brazil58.tsp"]= 25395
-opt_tour["brg180.tsp"]= 1950
+#opt_tour["brg180.tsp"]= 1950
 opt_tour["dantzig42.tsp"]= 699
 opt_tour["fri26.tsp"]= 937
 opt_tour["gr17.tsp"]= 2085
@@ -29,7 +29,7 @@ opt_tour["gr24.tsp"]= 1272
 opt_tour["gr48.tsp"]= 5046
 opt_tour["gr120.tsp"]= 6942
 opt_tour["hk48.tsp"]= 11461
-opt_tour["pa561.tsp"]= 2763
+#opt_tour["pa561.tsp"]= 2763
 opt_tour["swiss42.tsp"]= 1273
 
 
