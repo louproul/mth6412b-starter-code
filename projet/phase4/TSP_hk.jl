@@ -111,6 +111,9 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
 
         # step 6
         if norm(vᵏ)==0.0
+            final_TSP = Tᵏ
+            final_Πᵏ = Πᵏ
+            best_iter = iter
             break
         end
     
