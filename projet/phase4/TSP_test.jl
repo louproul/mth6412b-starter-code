@@ -29,7 +29,7 @@ opt_tour["gr48.tsp"]= 5046
 opt_tour["gr120.tsp"]= 6942
 opt_tour["hk48.tsp"]= 11461
 opt_tour["swiss42.tsp"]= 1273
-opt_tour["brg180.tsp"]= 1950
+
 
 """Test and compare both methods (RSL and HK)"""
 i=0
@@ -58,6 +58,7 @@ for (key, value) in opt_tour
     end
   end
   println("Result achieved by RSL for ", key," : ", W_final[i], " on the node: ", source[i])
+  println(key, " : ", value)
 
   @test W_final[i] < 2*value
 
@@ -75,5 +76,5 @@ graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W1, TSP_Graph = RSL_TSP(Main_Graph, Main_Graph.nodes[1])
+W1, TSP_Graph = RSL_TSP(Main_Graph, Main_Graph.nodes[10])
 @test W1 < 2*2763
