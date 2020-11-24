@@ -100,7 +100,7 @@ function main_fct(filename = "bayg29.tsp")
   #display(plot_markedgraph(TSP_Graph))
 
   
-  W2, HK_Graph = HK_MST(Main_Graph, 1, Source, 3, 1000) # method::Int64=0, t_step::Float64 = -1.0, stop_method::Int64 = 0)
+  W2, HK_Graph = HK_MST(Main_Graph, 1, Source, 3, 3000) # method::Int64=0, t_step::Float64 = -1.0, stop_method::Int64 = 0)
   println("The weight of TSP using HK algorithm: ", W2)
   #display(plot_markedgraph(HK_Graph))
  return W1, TSP_Graph, W2, HK_Graph 
