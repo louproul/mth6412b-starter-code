@@ -112,11 +112,74 @@ md" Elle renvoie la tournée générée avec RSL et HK"
 # ╔═╡ c60f7dae-2dfa-11eb-296d-d164a6612917
 W1, TSP_Graph, W2, HK_Graph = main_fct("bayg29.tsp")
 
+# ╔═╡ c576aa00-2e03-11eb-2157-4da004c22518
+md"Nous présentons le résultat graphique pour RSL"
+
 # ╔═╡ ee01a050-2dfa-11eb-3d10-c5aba1637182
 plot_markedgraph(TSP_Graph)
 
+# ╔═╡ f13e3ea0-2e03-11eb-3efb-f16fb4e7b647
+md"Nous présentons le résultat graphique pour HK. Avec un poids de 1645 légèrement supérieur au poids optimal."
+
 # ╔═╡ 10ddbaa0-2dfb-11eb-2f04-75cbbc8ad2bc
 plot_markedgraph(HK_Graph)
+
+# ╔═╡ 0e1ed2a0-2e04-11eb-1fe0-b56860f26bd2
+md" Finalement le calcul pour un autre instance \"gr17.tsp\""
+
+# ╔═╡ 5928fc90-2e03-11eb-0cfa-07159c013c63
+W1_gr17, TSP_Graph_gr17, W2_gr17, HK_Graph_gr17 = main_fct("gr17.tsp")
+
+# ╔═╡ 30d11dd0-2e04-11eb-279f-e187c227d74f
+md" #### Voici un fichier (\"test\_hk.jl\") pour calculer l'erreur relative"
+
+# ╔═╡ a9c19652-2e06-11eb-0af0-cd3f10fa64bd
+begin
+	opt_tour = Dict()
+opt_tour["bayg29.tsp"]= 1610
+opt_tour["bays29.tsp"]= 2020
+opt_tour["brazil58.tsp"]= 25395
+opt_tour["dantzig42.tsp"]= 699
+opt_tour["fri26.tsp"]= 937
+opt_tour["gr17.tsp"]= 2085
+opt_tour["gr21.tsp"]= 2707
+opt_tour["gr24.tsp"]= 1272
+opt_tour["gr48.tsp"]= 5046
+opt_tour["gr120.tsp"]= 6942
+opt_tour["hk48.tsp"]= 11461
+opt_tour["swiss42.tsp"]= 1273
+
+
+"""Test HK algorithm on instances and calculate the error"""
+i=0
+W = zeros(length(opt_tour))
+errors = Dict()
+
+for (key, value) in opt_tour
+  global i+=1
+  filename_stsp = key
+  root = normpath(joinpath(@__FILE__,"..","..",".."))
+  filepath_to_stsp = "instances\\stsp"
+  filepath = joinpath(root, filepath_to_stsp) 
+  filepath = joinpath(filepath, filename_stsp) 
+
+  header = read_header(filepath)
+  graph_nodes, graph_edges, edges_weight = read_stsp(filepath)
+  Main_Graph = MarkedGraph("Graph_"*header["NAME"], MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
+  create_MarkedGraph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
+
+  W1, TSP_Graph, Π = HK_MST(Main_Graph, 1 , Main_Graph.nodes[4], 4, 2000)
+  errors[key] = 100*(W1-value)/value
+
+end
+println(errors)
+end
+
+# ╔═╡ 932cb990-2e08-11eb-2a92-c7f340b49cbb
+errors
+
+# ╔═╡ 9ddec310-2e08-11eb-3cff-99cbad5311af
+md" On a un bug au niveau du calcul de l'erreur relative. Bien qu'on est des tournées, il semble qu'il y est un erreur lorsqu'on revient au coût original des arrêtes. Il faut bien sûr enlever les pénalités, mais quelques choses nous échappent ici"
 
 # ╔═╡ Cell order:
 # ╟─4239e6e0-1d67-11eb-15c3-0399b9b830f4
@@ -140,5 +203,13 @@ plot_markedgraph(HK_Graph)
 # ╠═bea2db30-2dfa-11eb-300a-f3e69dc1194a
 # ╟─b08e8520-2e00-11eb-29e3-d71b02c8b8f8
 # ╠═c60f7dae-2dfa-11eb-296d-d164a6612917
+# ╟─c576aa00-2e03-11eb-2157-4da004c22518
 # ╠═ee01a050-2dfa-11eb-3d10-c5aba1637182
+# ╟─f13e3ea0-2e03-11eb-3efb-f16fb4e7b647
 # ╠═10ddbaa0-2dfb-11eb-2f04-75cbbc8ad2bc
+# ╠═0e1ed2a0-2e04-11eb-1fe0-b56860f26bd2
+# ╠═5928fc90-2e03-11eb-0cfa-07159c013c63
+# ╟─30d11dd0-2e04-11eb-279f-e187c227d74f
+# ╠═a9c19652-2e06-11eb-0af0-cd3f10fa64bd
+# ╠═932cb990-2e08-11eb-2a92-c7f340b49cbb
+# ╠═9ddec310-2e08-11eb-3cff-99cbad5311af
