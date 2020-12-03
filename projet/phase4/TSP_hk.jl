@@ -169,24 +169,158 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
     else
         println("The algorithm doesn't reach to a tour")
         println("The weight of the Bset found 1_Tree: ", final_weight)
-
-        temp_Graph = deepcopy(Graph)
-        final_weight = Inf
-        for edge in temp_Graph.edges
-            i = parse(Int, edge.adjacentnodes[1].name)
-            j = parse(Int, edge.adjacentnodes[2].name)
-            edge.weight = edge.weight + final_Πᵏ[i]+ final_Πᵏ[j]
-        end
-
-        for start_node in temp_Graph.nodes
-            new_W , TSP_Graph = RSL_TSP(temp_Graph, start_node)
-            d = compute_deg(TSP_Graph)
-            new_W = new_W-sum(final_Πᵏ.*d)
-            if final_weight > new_W
-                final_weight = new_W
-                final_TSP = deepcopy(TSP_Graph)
-            end
-        end    
     end
     return final_weight, final_TSP, final_Πᵏ
 end
+
+
+# function to create tour after solving TSP with Held and Karp algorithm if it does not converge
+function create_tour!(one_Tree::MarkedGraph{T}, Graph::MarkedGraph{T}, Weight::Float64) where T
+    start_V = nothing
+    for node in one_Tree.nodes
+        if length(adjacent(node)) == 1
+            start_V = node
+            break
+        end
+    end
+    if start_V != nothing
+        node_list = []
+        push!(node_list, start_V.name)
+        Run_cri = true
+        curr_node = one_Tree.nodes[findfirst(x->x.name == node_list[end], one_Tree.nodes)]
+        while Run_cri
+            prev_node = curr_node
+            curr_node = one_Tree.nodes[findfirst(x->x.name == node_list[end], one_Tree.nodes)]
+            if length(adjacent(curr_node)) != 0
+                next = (adjacent(curr_node)[1][1] != prev_node.name) ? adjacent(curr_node)[1][1] : adjacent(curr_node)[2][1]               
+                next_node = one_Tree.nodes[findfirst(x->x.name == next , one_Tree.nodes)]
+                
+                if length(adjacent(next_node)) > 2
+                    cut_name = adjacent(next_node)[findfirst(x->x[1] != curr_node.name , adjacent(next_node))][1]
+                    cut_node = one_Tree.nodes[findfirst(x->x.name == cut_name , one_Tree.nodes)]
+                    # remove the edge 
+                    edge_name = "("*cut_node.name*","*next_node.name*")"
+                    Weight = Weight - graph_edgeweight(Graph, cut_node, next_node)
+                    delete!(cut_node.adjacents, next_node.name)
+                    delete!(next_node.adjacents, cut_node.name)
+                    
+                    if isempty(findall(x->x.name==edge_name, one_Tree.edges))
+                        edge_name = "("*next_node.name*","*cut_node.name*")"
+                        deleteat!(one_Tree.edges, findall(x->x.name==edge_name, one_Tree.edges)) 
+                    else
+                        deleteat!(one_Tree.edges, findall(x->x.name==edge_name, one_Tree.edges))
+                    end                           
+                    
+                    # add a new edge
+                    new_Ename = "("*cut_node.name*","*start_V.name*")"
+                    edge_weight = graph_edgeweight(Graph, cut_node, start_V)
+                    new_edge = MarkedEdge(new_Ename, edge_weight, (cut_node , start_V))
+                    
+                    add_adj_node!(start_V, cut_node, edge_weight)
+                    add_adj_node!(cut_node, start_V, edge_weight)
+                    add_markededge!(one_Tree, new_edge)
+                    Weight = Weight + edge_weight
+                    Run_cri = false
+                    
+                else
+                    push!(node_list, next_node.name)
+                end
+            end
+        end
+        create_tour!(one_Tree, Graph, Weight)
+    end 
+    return one_Tree, Weight
+end
+    
+    
+    
+
+function Improve_path!(TSP_Tour::MarkedGraph{T}, Graph::MarkedGraph{T} , Weight::Float64) where T
+    #   Edge_list = sort(TSP_Tour.edges, by = x->x.weight, rev=true)
+       start_e = TSP_Tour.edges[findall(x->x.adjacentnodes[1].name == "1", TSP_Tour.edges)][1]
+       println(start_e.name)
+       Edge_list = create_touredge_list!(TSP_Tour, start_e)
+       
+       eb = sort(Edge_list, by = x -> x.weight, rev=true)[1]
+   #    Edge_list = create_touredge_list!(TSP_Tour, eb)
+       e = eb.adjacentnodes[1]   
+       b = eb.adjacentnodes[2]
+
+       stop = false
+       find_improve = false
+       for xy in sort(Edge_list, by = x -> x.weight, rev=true) 
+           x = xy.adjacentnodes[1]
+           y = xy.adjacentnodes[2]
+           if (x != e)&&(x != b)&&(y != e)&&(y != b)
+               g = xy.weight - graph_edgeweight(Graph, e, x)
+               if g > 0
+                   weight_improve = Weight - g - eb.weight + graph_edgeweight(Graph, y, b)
+                   if weight_improve < Weight   
+                       Weight = weight_improve
+
+                       xe_name = "("*x.name*","*e.name*")"
+                       yb_name = "("*y.name*","*b.name*")"
+                               
+                       # swap edges eb with xy and update tour
+                       xe = MarkedEdge(xe_name, graph_edgeweight(Graph, x, e), (x , e))
+                       yb = MarkedEdge(yb_name, graph_edgeweight(Graph, y, b), (y , b))
+                       
+                       delete!(e.adjacents, b.name)
+                       delete!(b.adjacents, e.name)
+                       delete!(x.adjacents, y.name)
+                       delete!(y.adjacents, x.name)
+                           
+                           
+                       add_adj_node!(e, x, xe.weight)
+                       add_adj_node!(x, e, xe.weight)
+                       add_adj_node!(b, y, yb.weight)
+                       add_adj_node!(y, b, yb.weight)
+                       
+                       println(length(TSP_Tour.edges))
+                       
+                           
+                       add_markededge!(TSP_Tour, xe)
+                       add_markededge!(TSP_Tour, yb)
+                       
+                       println(length(TSP_Tour.edges))
+   
+                       deleteat!(TSP_Tour.edges, findall(x->x.name==eb.name, TSP_Tour.edges))
+                       deleteat!(TSP_Tour.edges, findall(x->x.name==xy.name, TSP_Tour.edges))
+                       
+                       println(length(TSP_Tour.edges))
+                       
+                       find_improve = true
+                       break
+                   end
+               end                    
+           end
+       end
+       return Weight
+   end
+     #  if find_improve == true
+    #       println("iterate")
+    #       Improve_path!(TSP_Tour, Graph, Weight)
+    #   end
+   
+
+    function create_touredge_list!(TSP_Tour::MarkedGraph{T}, start_e::MarkedEdge{T}) where T
+        n = length(TSP_Tour.edges)
+        edge_list = MarkedEdge{Array{Float64,1}}[]
+        graph_edges = TSP_Tour.edges
+        push!(edge_list, start_e)
+        while length(edge_list) != n
+            if isempty(findall(x->x.adjacentnodes[1].name == edge_list[end].adjacentnodes[2].name, graph_edges))
+                e = graph_edges[findfirst(x->x.adjacentnodes[2].name == edge_list[end].adjacentnodes[2].name, graph_edges)]
+                rev_name = "("*e.adjacentnodes[2].name*","*e.adjacentnodes[1].name*")"
+                rev_edge = MarkedEdge(rev_name, e.weight , (e.adjacentnodes[2] , e.adjacentnodes[1]))
+                push!(edge_list, rev_edge) 
+                deleteat!(graph_edges, findall(x->x.name==e.name, graph_edges))
+            else
+                e = TSP_Tour.edges[findfirst(x->x.adjacentnodes[1].name == edge_list[end].adjacentnodes[2].name, TSP_Tour.edges)]
+                push!(edge_list, e)
+                deleteat!(graph_edges, findall(x->x.name==e.name, graph_edges))
+            end
+        end
+        TSP_Tour.edges = edge_list
+        return edge_list
+    end
