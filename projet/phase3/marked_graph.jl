@@ -85,3 +85,21 @@ function graph_edgeweight(Graph::MarkedGraph, node1::MarkedNode, node2::MarkedNo
     end
     return weight
 end
+
+
+function create_img_Graph!(graph::MarkedGraph, graph_nodes::Dict{Int64,Vector{Float64}},graph_edges::Array{Any,1}, edges_weight::Dict{Tuple{Int64,Int64},Float64})
+    T = valtype(graph_nodes)
+    for k = 1 : length(graph_edges)
+        new_node = MarkedNode{T}(string(k), [k], false, Inf, nothing, Dict())
+        add_markednode!(graph, new_node)
+    end
+    for k = 1 : length(graph_edges)
+        for j in graph_edges[k]
+            edge_name = "("*string(k)*","*string(j)*")"
+            add_adj_node!(graph.nodes[k], graph.nodes[j], edges_weight[k,j])
+            add_adj_node!(graph.nodes[j], graph.nodes[k], edges_weight[k,j])
+            new_edge = MarkedEdge(edge_name, edges_weight[k,j], (graph.nodes[k] , graph.nodes[j]))
+            add_markededge!(graph, new_edge)
+        end
+    end
+end
