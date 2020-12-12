@@ -95,3 +95,11 @@ function Tour_nodes_list(TSP_Graph::MarkedGraph{T}) where T
     node_tour = node_tour.-1 
     return node_tour
 end
+
+function conver_TSP_to_img(TSP_Graph::MarkedGraph{T},tour_name::String) where T
+	start_e = TSP_Graph.edges[findall(x->x.adjacentnodes[1].name == "1", TSP_Graph.edges)][1]
+	Edge_list = create_touredge_list!(TSP_Graph, start_e)
+	node_tour = Tour_nodes_list(TSP_Graph)
+
+	write_tour(tour_name, node_tour, convert(Float32, W2))
+end
