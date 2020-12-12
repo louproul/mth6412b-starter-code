@@ -21,9 +21,9 @@ include("tools.jl")
 
 filename_stsp = "lower-kananaskis-lake.tsp"
 root = normpath(joinpath(@__FILE__,"..","..",".."))
-filepath_to_stsp = "instances\\img_stsp"
+filepath_to_stsp = "instances\\tsp\\instances"
 filepath = joinpath(root, filepath_to_stsp) 
-filepath = joinpath(filepath, filename_stsp) 
+filepath = joinpath(filepath, filename_stsp * ".tsp") 
 
 """Reading data form data files"""
 header = read_img_header(filepath)
@@ -35,7 +35,7 @@ graph_nodes, graph_edges, edges_weight = read_img_stsp(filepath)
 Main_Graph = MarkedGraph("Graph_image", MarkedNode{Array{Float64,1}}[], MarkedEdge{Array{Float64,1}}[]) 
 create_img_Graph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
-W2, HK_Graph = HK_MST(Main_Graph, 2, Main_Graph.nodes[1], 3, 10) # method::Int64=0, t_step::Float64 = -1.0, stop_method::Int64 = 0)
+W2, HK_Graph = HK_MST(Main_Graph, 1, Main_Graph.nodes[1], 3, 10) # method::Int64=0, t_step::Float64 = -1.0, stop_method::Int64 = 0)
 println("The weight of TSP using HK algorithm: ", W2)
 
 New_TSP, new_W = create_tour!(deepcopy(HK_Graph), Main_Graph, W2)
@@ -52,7 +52,38 @@ println("The weight of TSP Tour: ", new_W)
 input_img = "lower-kananaskis-lake.png"
 inputpath_to_stsp = "images\\shuffled"
 inputpath = joinpath(root, inputpath_to_stsp) 
-inputpath = joinpath(inputpath, input_img) 
+inputpath_to_shuffle_image = joinpath(inputpath, filename_stsp * ".png") 
+path_reconstructed_image = joinpath(normpath(joinpath(@__FILE__,"..")),"tour_and_reconstructed_image", "construted_" * filename_stsp * ".png") 
+
+reconstruct_picture(path_name_tour, inputpath_to_shuffle_image, path_reconstructed_image; view = true)
+
+
+
+
+
+instances_name = dict()
+instances_name["abstract-light-painting"] = 12314767
+instances_name["alaska-railroad"] = 7667914
+instances_name["blue-hour-paris"] = 3946200
+instances_name["lower-kananaskis-lake"] = 4226754
+instances_name["marlet2-radio-board"] = 8863246
+instances_name["nikos-cat"] = 3036676
+instances_name["pizza-food-wallpaper"] = 5041336
+instances_name["the-enchanted-garden"] = 19914400
+instances_name["tokyo-skytree-aerial"] = 13610038
+
+
+reconstruct_image("abstract-light-painting") 
+reconstruct_image("alaska-railroad")
+reconstruct_image("blue-hour-paris")
+reconstruct_image("lower-kananaskis-lake")
+reconstruct_image("marlet2-radio-board") 
+#reconstruct_image("nikos-cat")
+reconstruct_image("pizza-food-wallpaper")
+reconstruct_image("the-enchanted-garden")
+reconstruct_image("tokyo-skytree-aerial")
+
+
 
 #write_tour("lower-kananaskis-lake.tour", node_tour, convert(Float32, W2))
 conver_TSP_to_img(New_TSP ,"lower-kananaskis-lake.tour")
