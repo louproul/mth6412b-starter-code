@@ -156,6 +156,7 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
         iter += 1   
     end 
     for edge in final_TSP.edges
+        edge.weight = graph_edgeweight(Graph, edge.adjacentnodes[1], edge.adjacentnodes[2])
         final_weight = final_weight + edge.weight
     end
     dᵏ = compute_deg(final_TSP)
@@ -169,8 +170,9 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
     else
         println("The algorithm doesn't reach to a tour")
         println("The weight of the Bset found 1_Tree: ", final_weight)
+        Improved_W = Improve_path!(final_TSP, Graph, final_weight)
     end
-    return final_weight, final_TSP, final_Πᵏ
+    return Improved_W, final_TSP, final_Πᵏ
 end
 
 
@@ -234,74 +236,79 @@ end
     
     
     
+# function to improve the total weight of the TSP tour by swaping edges
+function Improve_path!(TSP_Tour::MarkedGraph{T}, Graph::MarkedGraph{T} , Weight::Float64) where T  
+    k = 1
+    find_improve = true
+    while find_improve
+        start_e = TSP_Tour.edges[findall(x->x.adjacentnodes[1].name == "1", TSP_Tour.edges)][1]
+        Edge_list = create_touredge_list!(TSP_Tour, start_e)
+        eb = sort(Edge_list, by = x->x.weight, rev=true)[k]
+        if eb.adjacentnodes[1].name == "1" || eb.adjacentnodes[2].name == "1" 
+            k = k+1
+        else
+            Weight, find_improve = Improve_path_intit!(Edge_list, TSP_Tour, Graph, Weight, eb, k)
+            println(Weight)
+        end
+    end
+    num = 0
+    for k in 1:length(TSP_Tour.edges)
+        if num > 3
+            break
+        end
+        find_improve = true
+        Best_weight = Weight
+        while find_improve
+            start_e = TSP_Tour.edges[findall(x->x.adjacentnodes[1].name == "1", TSP_Tour.edges)][1]
+            Edge_list = create_touredge_list!(TSP_Tour, start_e)
+            eb = sort(Edge_list, by = x->x.weight, rev=true)[k]
+            if eb.adjacentnodes[1].name == "1" || eb.adjacentnodes[2].name == "1" 
+                break
+            else
+                Weight, find_improve = Improve_path_intit!(Edge_list, TSP_Tour, Graph, Weight, eb, k)
+                println(Weight)
+            end
+        end
+        if Best_weight == Weight
+            num = num+1
+        end
+    end
+    return Weight
+end
 
-function Improve_path!(TSP_Tour::MarkedGraph{T}, Graph::MarkedGraph{T} , Weight::Float64) where T
-    #   Edge_list = sort(TSP_Tour.edges, by = x->x.weight, rev=true)
-       start_e = TSP_Tour.edges[findall(x->x.adjacentnodes[1].name == "1", TSP_Tour.edges)][1]
-       println(start_e.name)
-       Edge_list = create_touredge_list!(TSP_Tour, start_e)
-       
-       eb = sort(Edge_list, by = x -> x.weight, rev=true)[1]
-   #    Edge_list = create_touredge_list!(TSP_Tour, eb)
-       e = eb.adjacentnodes[1]   
-       b = eb.adjacentnodes[2]
 
-       stop = false
-       find_improve = false
-       for xy in sort(Edge_list, by = x -> x.weight, rev=true) 
-           x = xy.adjacentnodes[1]
-           y = xy.adjacentnodes[2]
-           if (x != e)&&(x != b)&&(y != e)&&(y != b)
-               g = xy.weight - graph_edgeweight(Graph, e, x)
-               if g > 0
-                   weight_improve = Weight - g - eb.weight + graph_edgeweight(Graph, y, b)
-                   if weight_improve < Weight   
-                       Weight = weight_improve
 
-                       xe_name = "("*x.name*","*e.name*")"
-                       yb_name = "("*y.name*","*b.name*")"
-                               
-                       # swap edges eb with xy and update tour
-                       xe = MarkedEdge(xe_name, graph_edgeweight(Graph, x, e), (x , e))
-                       yb = MarkedEdge(yb_name, graph_edgeweight(Graph, y, b), (y , b))
-                       
-                       delete!(e.adjacents, b.name)
-                       delete!(b.adjacents, e.name)
-                       delete!(x.adjacents, y.name)
-                       delete!(y.adjacents, x.name)
-                           
-                           
-                       add_adj_node!(e, x, xe.weight)
-                       add_adj_node!(x, e, xe.weight)
-                       add_adj_node!(b, y, yb.weight)
-                       add_adj_node!(y, b, yb.weight)
-                       
-                       println(length(TSP_Tour.edges))
-                       
-                           
-                       add_markededge!(TSP_Tour, xe)
-                       add_markededge!(TSP_Tour, yb)
-                       
-                       println(length(TSP_Tour.edges))
-   
-                       deleteat!(TSP_Tour.edges, findall(x->x.name==eb.name, TSP_Tour.edges))
-                       deleteat!(TSP_Tour.edges, findall(x->x.name==xy.name, TSP_Tour.edges))
-                       
-                       println(length(TSP_Tour.edges))
-                       
-                       find_improve = true
-                       break
-                   end
-               end                    
-           end
-       end
-       return Weight
-   end
-     #  if find_improve == true
-    #       println("iterate")
-    #       Improve_path!(TSP_Tour, Graph, Weight)
-    #   end
-   
+
+# function to find an edge to swap with a specified edge (eb) in a Tour to reduce total weight of the Tour 
+    function Improve_path_intit!(Edge_list::Vector{MarkedEdge{T}}, TSP_Tour::MarkedGraph{T}, Graph::MarkedGraph{T} , Weight::Float64, eb::MarkedEdge{T}, k) where T
+    
+        e = eb.adjacentnodes[1]   
+        b = eb.adjacentnodes[2]
+        
+        stop = false
+        find_improve = false
+        
+        for i in k:length(Edge_list)
+            xy = Edge_list[i]
+            x = xy.adjacentnodes[1]
+            y = xy.adjacentnodes[2]
+            if (x != e)&&(x != b)&&(y != e)&&(y != b)&&(x.name != "1")&&(y.name != "1")
+                weight_improve = Weight - xy.weight - eb.weight + graph_edgeweight(Graph, y, b) + graph_edgeweight(Graph, e, x)
+                if weight_improve < Weight
+                    Weight = weight_improve
+                        
+                    # swap edges eb with xy and update tour
+                        
+                    Swap_edge!(TSP_Tour, Graph, eb, xy)
+    
+                    find_improve = true
+                    break
+                end
+            end
+        end        
+        return Weight , find_improve
+    end
+
 
     function create_touredge_list!(TSP_Tour::MarkedGraph{T}, start_e::MarkedEdge{T}) where T
         n = length(TSP_Tour.edges)
@@ -323,4 +330,38 @@ function Improve_path!(TSP_Tour::MarkedGraph{T}, Graph::MarkedGraph{T} , Weight:
         end
         TSP_Tour.edges = edge_list
         return edge_list
+    end
+
+
+    function Swap_edge!(TSP_Tour::MarkedGraph{T}, Graph::MarkedGraph{T}, eb::MarkedEdge, xy::MarkedEdge)  where T
+        e = eb.adjacentnodes[1]   
+        b = eb.adjacentnodes[2]
+        
+        x = xy.adjacentnodes[1]
+        y = xy.adjacentnodes[2]
+        
+        xe_name = "("*x.name*","*e.name*")"
+        yb_name = "("*y.name*","*b.name*")"
+                                   
+        xe = MarkedEdge(xe_name, graph_edgeweight(Graph, x, e), (x , e))
+        yb = MarkedEdge(yb_name, graph_edgeweight(Graph, y, b), (y , b))
+                           
+        delete!(e.adjacents, b.name)
+        delete!(b.adjacents, e.name)
+        delete!(x.adjacents, y.name)
+        delete!(y.adjacents, x.name)
+                               
+                               
+        add_adj_node!(e, x, xe.weight)
+        add_adj_node!(x, e, xe.weight)
+        add_adj_node!(b, y, yb.weight)
+        add_adj_node!(y, b, yb.weight)
+                           
+                               
+        add_markededge!(TSP_Tour, xe)
+        add_markededge!(TSP_Tour, yb)
+       
+        deleteat!(TSP_Tour.edges, findall(x->x.name==eb.name, TSP_Tour.edges))
+        deleteat!(TSP_Tour.edges, findall(x->x.name==xy.name, TSP_Tour.edges))
+        
     end
