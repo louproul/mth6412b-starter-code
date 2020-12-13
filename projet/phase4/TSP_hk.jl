@@ -162,17 +162,16 @@ function HK_MST(Graph::MarkedGraph{T}, MST_Algorithm::Int64, source::MarkedNode{
     dᵏ = compute_deg(final_TSP)
     final_weight = final_weight-sum(final_Πᵏ.*dᵏ)
     println("number of iteration: ", iter)
-    println("period_dur: ", period_dur)
-    println("tᵏ: ", tᵏ)
+ #   println("period_dur: ", period_dur)
+ #   println("tᵏ: ", tᵏ)
     if vᵏ == zeros(n)
         println("The algorithm converged successfully ")
         println("The final weight of TSP: ", final_weight)
     else
         println("The algorithm doesn't reach to a tour")
         println("The weight of the Bset found 1_Tree: ", final_weight)
-        Improved_W = Improve_path!(final_TSP, Graph, final_weight)
     end
-    return Improved_W, final_TSP, final_Πᵏ
+    return final_weight, final_TSP, final_Πᵏ
 end
 
 
