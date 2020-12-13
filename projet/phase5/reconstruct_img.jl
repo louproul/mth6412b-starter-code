@@ -19,7 +19,7 @@ include("read_stsp_new.jl")
 include("tools.jl")
 
 
-function reconstruct_image(filename_stsp::String)
+function reconstruct_image(filename_stsp::String, view::Bool=false)
     root = normpath(joinpath(@__FILE__,"..","..",".."))
     filepath_to_stsp = "instances\\tsp\\instances"
     filepath = joinpath(root, filepath_to_stsp) 
@@ -52,7 +52,7 @@ function reconstruct_image(filename_stsp::String)
 
     inputpath_to_shuffle_image = joinpath(inputpath, filename_stsp * ".png") 
     path_reconstructed_image = joinpath(normpath(joinpath(@__FILE__,"..")),"tour_and_reconstructed_image", "construted_" * filename_stsp * ".png") 
-    reconstruct_picture(path_name_tour, inputpath_to_shuffle_image, path_reconstructed_image; view = true)
+    reconstruct_picture(path_name_tour, inputpath_to_shuffle_image, path_reconstructed_image; view)
 
 end
 
