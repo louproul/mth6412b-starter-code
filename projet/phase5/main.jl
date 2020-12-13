@@ -61,16 +61,16 @@ reconstruct_picture(path_name_tour, inputpath_to_shuffle_image, path_reconstruct
 
 
 
-instances_name = dict()
-instances_name["abstract-light-painting"] = 12314767
-instances_name["alaska-railroad"] = 7667914
-instances_name["blue-hour-paris"] = 3946200
-instances_name["lower-kananaskis-lake"] = 4226754
-instances_name["marlet2-radio-board"] = 8863246
-instances_name["nikos-cat"] = 3036676
-instances_name["pizza-food-wallpaper"] = 5041336
-instances_name["the-enchanted-garden"] = 19914400
-instances_name["tokyo-skytree-aerial"] = 13610038
+# instances_name = dict()
+# instances_name["abstract-light-painting"] = 12314767
+# instances_name["alaska-railroad"] = 7667914
+# instances_name["blue-hour-paris"] = 3946200
+# instances_name["lower-kananaskis-lake"] = 4226754
+# instances_name["marlet2-radio-board"] = 8863246
+# instances_name["nikos-cat"] = 3036676
+# instances_name["pizza-food-wallpaper"] = 5041336
+# instances_name["the-enchanted-garden"] = 19914400
+# instances_name["tokyo-skytree-aerial"] = 13610038
 
 
 reconstruct_image("abstract-light-painting") 
@@ -78,7 +78,7 @@ reconstruct_image("alaska-railroad")
 reconstruct_image("blue-hour-paris")
 reconstruct_image("lower-kananaskis-lake")
 reconstruct_image("marlet2-radio-board") 
-#reconstruct_image("nikos-cat")
+reconstruct_image("nikos-cat")
 reconstruct_image("pizza-food-wallpaper")
 reconstruct_image("the-enchanted-garden")
 reconstruct_image("tokyo-skytree-aerial")
