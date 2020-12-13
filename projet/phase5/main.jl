@@ -33,14 +33,14 @@ instances_name["the-enchanted-garden"] = 19914400
 instances_name["tokyo-skytree-aerial"] = 13610038
 
 
-reconstruct_image("abstract-light-painting") 
-reconstruct_image("alaska-railroad")
-reconstruct_image("blue-hour-paris")
-reconstruct_image("lower-kananaskis-lake")
-reconstruct_image("marlet2-radio-board") 
-reconstruct_image("nikos-cat")
-reconstruct_image("pizza-food-wallpaper")
-reconstruct_image("the-enchanted-garden")
-reconstruct_image("tokyo-skytree-aerial")
+ reconstruct_image("abstract-light-painting",true) 
+reconstruct_image("alaska-railroad",true)
+reconstruct_image("blue-hour-paris",true)
+reconstruct_image("lower-kananaskis-lake",true)
+reconstruct_image("marlet2-radio-board",true) 
+reconstruct_image("nikos-cat",true)
+reconstruct_image("pizza-food-wallpaper",true)
+reconstruct_image("the-enchanted-garden",true)
+reconstruct_image("tokyo-skytree-aerial",true)
 
 
