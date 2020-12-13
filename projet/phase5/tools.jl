@@ -2,10 +2,10 @@ using Random, FileIO, Images, ImageView, ImageMagick
 
 """Compute the similarity score between two pixels."""
 function compare_pixels(p1, p2)
-    r1, g1, b1 = Float64 (red (p1)), Float64 (green (p1)), Float64 (blue ( p1))
-    r2, g2, b2 = Float64 (red (p2)), Float64 (green (p2)), Float64 (blue (p2))
-    println ("r1:", r1, "g1:", g1, "b1:", b1)
-    return abs (r1-r2) + abs (g1-g2) + abs (b1-b2)
+    r1, g1, b1 = Float64(red(p1)), Float64(green(p1)), Float64(blue(p1))
+    r2, g2, b2 = Float64(red(p2)), Float64(green(p2)), Float64(blue(p2))
+    println("r1:", r1, "g1:", g1, "b1:", b1)
+    return abs(r1-r2) + abs(g1-g2) + abs(b1-b2)
 end
 
 
@@ -63,7 +63,7 @@ function shuffle_picture(input_name::String, output_name::String; view::Bool=fal
 end
 
 """Read a tour file and a shuffle image, and output the image reconstructed using the tour."""
-function reconstruct_picture(tour_filename::String, input_name::String, output_name::String; view::Bool=false)
+function reconstruct_picture(tour_filename::String, input_name::String, output_name::String, view::Bool=false)
 	tour = Int[]
 	file = open(tour_filename, "r")
 	in_tour_section = false

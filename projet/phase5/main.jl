@@ -33,7 +33,7 @@ instances_name["the-enchanted-garden"] = 19914400
 instances_name["tokyo-skytree-aerial"] = 13610038
 
 
- reconstruct_image("abstract-light-painting",true) 
+reconstruct_image("abstract-light-painting",true) 
 reconstruct_image("alaska-railroad",true)
 reconstruct_image("blue-hour-paris",true)
 reconstruct_image("lower-kananaskis-lake",true)

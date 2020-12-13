@@ -19,7 +19,7 @@ include("read_stsp_new.jl")
 include("tools.jl")
 
 
-function reconstruct_image(filename_stsp::String, view::Bool=false)
+function reconstruct_image(filename_stsp::String, view::Bool=false, MST_Algorithm=1, step_method=3, nb_iteration=10)
     root = normpath(joinpath(@__FILE__,"..","..",".."))
     filepath_to_stsp = "instances\\tsp\\instances"
     filepath = joinpath(root, filepath_to_stsp) 
@@ -34,7 +34,7 @@ function reconstruct_image(filename_stsp::String, view::Bool=false)
     create_img_Graph!(Main_Graph, graph_nodes, graph_edges, edges_weight)
 
     # solving the TSP problem using Held and Karp algorithm
-    W2, HK_Graph = HK_MST(Main_Graph, 1, Main_Graph.nodes[1], 3, 10) # method::Int64=0, t_step::Float64 = -1.0, stop_method::Int64 = 0)
+    W2, HK_Graph = HK_MST(Main_Graph, MST_Algorithm, Main_Graph.nodes[1], step_method, nb_iteration) # method::Int64=0, t_step::Float64 = -1.0, stop_method::Int64 = 0)
 
     New_TSP, tour_W = create_tour!(deepcopy(HK_Graph), Main_Graph, W2)
     println("The weight of TSP Tour: ", tour_W)
@@ -52,7 +52,9 @@ function reconstruct_image(filename_stsp::String, view::Bool=false)
 
     inputpath_to_shuffle_image = joinpath(inputpath, filename_stsp * ".png") 
     path_reconstructed_image = joinpath(normpath(joinpath(@__FILE__,"..")),"tour_and_reconstructed_image", "construted_" * filename_stsp * ".png") 
-    reconstruct_picture(path_name_tour, inputpath_to_shuffle_image, path_reconstructed_image; view)
+    reconstruct_picture(path_name_tour, inputpath_to_shuffle_image, path_reconstructed_image, view)
+
+    return(tour_W)
 
 end
 
