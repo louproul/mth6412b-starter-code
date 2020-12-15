@@ -71,7 +71,7 @@ function Kruskal(Graph::MarkedGraph{T}) where T
             Union_sets(root1, root2, DS)
         end
     end
-    MST = MarkedGraph("MSTGraph_"*header["NAME"], MST_nodes, MST_edges) 
+    MST = MarkedGraph("MSTGraph_", MST_nodes, MST_edges) 
     for edge in MST.edges
         if !(edge.adjacentnodes[1] in MST.nodes)
             add_markednode!(MST, edge.adjacentnodes[1])

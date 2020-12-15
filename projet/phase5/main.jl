@@ -21,26 +21,99 @@ include("reconstruct_img.jl")
 
 
 
-instances_name = Dict()
-instances_name["abstract-light-painting"] = 12314767
-instances_name["alaska-railroad"] = 7667914
-instances_name["blue-hour-paris"] = 3946200
-instances_name["lower-kananaskis-lake"] = 4226754
-instances_name["marlet2-radio-board"] = 8863246
-instances_name["nikos-cat"] = 3036676
-instances_name["pizza-food-wallpaper"] = 5041336
-instances_name["the-enchanted-garden"] = 19914400
-instances_name["tokyo-skytree-aerial"] = 13610038
+# ****************************************************     
+# The best combination for instance abstract-light-painting
+# Step method number = 2 and number of iterations = 10     
+# MST_Algo = 2
+# Total weight of best tour is 1.2310679e7
+# **************************************************** 
+
+reconstruct_image("abstract-light-painting",false, 2, 2, 10) 
+
+# ****************************************************     
+# The best combination for instance alaska-railroad        
+# Step method number = 2 and number of iterations = 10     
+# MST_Algo = 2
+# Total weight of best tour is 7.663826e6
+# ****************************************************
+
+reconstruct_image("alaska-railroad",false, 2, 2, 10) 
+# ****************************************************
+# The best combination for instance blue-hour-paris
+# Step method number = 1 and number of iterations = 20
+# MST_Algo = 1
+# Total weight of best tour is 3.941921e6
+# ****************************************************
+
+reconstruct_image("blue-hour-paris",false, 1, 1, 20) 
+
+# ****************************************************
+# The best combination for instance lower-kananaskis-lake
+# Step method number = 2 and number of iterations = 10
+# MST_Algo = 2
+# Total weight of best tour is 4.222666e6
+# ****************************************************
+
+reconstruct_image("lower-kananaskis-lake",false, 2, 2, 10) 
+
+# ****************************************************
+# The best combination for instance marlet2-radio-board
+# Step method number = 4 and number of iterations = 20
+# MST_Algo = 1
+# Total weight of best tour is 8.823499e6
+# ****************************************************
+
+reconstruct_image("marlet2-radio-board",false, 1, 4, 20) 
+
+# ****************************************************
+# The best combination for instance nikos-cat
+# Step method number = 4 and number of iterations = 20
+# MST_Algo = 1
+# Total weight of best tour is 3.035828e6
+# ****************************************************
+
+reconstruct_image("nikos-cat",false, 1, 4, 20) 
+# ****************************************************
+# The best combination for instance pizza-food-wallpaper
+# Step method number = 2 and number of iterations = 10
+# MST_Algo = 2
+# Total weight of best tour is 5.037248e6
+# ****************************************************
+
+reconstruct_image("pizza-food-wallpaper",false, 2, 2, 10) 
+
+# ****************************************************
+# The best combination for instance the-enchanted-garden
+# Step method number = 2 and number of iterations = 10
+# MST_Algo = 2
+# Total weight of best tour is 1.9910312e7
+# ****************************************************
+
+reconstruct_image("the-enchanted-garden",false, 2, 2, 10) 
+
+# ****************************************************
+# The best combination for instance tokyo-skytree-aerial
+# Step method number = 2 and number of iterations = 10
+# MST_Algo = 2
+# Total weight of best tour is 1.360595e7
+# ****************************************************
+reconstruct_image("tokyo-skytree-aerial",false, 2, 2, 10) 
 
 
-reconstruct_image("abstract-light-painting",true) 
-reconstruct_image("alaska-railroad",true)
-reconstruct_image("blue-hour-paris",true)
-reconstruct_image("lower-kananaskis-lake",true)
-reconstruct_image("marlet2-radio-board",true) 
-reconstruct_image("nikos-cat",true)
-reconstruct_image("pizza-food-wallpaper",true)
-reconstruct_image("the-enchanted-garden",true)
-reconstruct_image("tokyo-skytree-aerial",true)
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
 
 

@@ -20,7 +20,7 @@ include("tools.jl")
 include("reconstruct_img.jl")
 
 # 1 = Prim Algo,  2 = Kruskal 
-MST_Algorithm = [1] 
+MST_Algorithm = [1,2] 
 
 #    if method ==1 ==> t = t/2^(period-1) 
 #    if method == 2 ==> k = max(1.0,k); t = t/k
@@ -28,7 +28,7 @@ MST_Algorithm = [1]
 #    if method == 4 ==> t = 1.0
 step_method = [1,2,3,4] 
 
-nb_iteration = [1,10,20]
+nb_iteration = [10,20]
 weight_dict = Dict()
 all_files = ["abstract-light-painting","alaska-railroad","blue-hour-paris",
               "lower-kananaskis-lake","marlet2-radio-board","nikos-cat","pizza-food-wallpaper",
@@ -36,16 +36,19 @@ all_files = ["abstract-light-painting","alaska-railroad","blue-hour-paris",
 
 for filename_bps in all_files
   weight_dict[filename_bps] = Dict()
-  for step_mt in step_method
-    for nb_iter in nb_iteration
-      println("Name of the instance = ", filename_bps)
-      println(" Performing search grid with parameters step method = ", step_mt, " and nb of iterations = ", nb_iter)
-      weight_dict[filename_bps][(step_mt, nb_iter)] =  reconstruct_image(filename_bps,false, MST_Algorithm[1], step_mt, nb_iter) 
+  for mst_method in MST_Algorithm
+    for step_mt in step_method
+      for nb_iter in nb_iteration
+        println("Name of the instance = ", filename_bps)
+        println(" Performing search grid with parameters step method = ", step_mt, " and nb of iterations = ", nb_iter)
+        weight_dict[filename_bps][(step_mt, nb_iter,mst_method)] =  reconstruct_image(filename_bps,false, mst_method, step_mt, nb_iter) 
+      end
     end
   end
 println("****************************************************")
 println("The best combination for instance ", filename_bps)
 println("Step method number = ", findmin(weight_dict[filename_bps])[2][1], " and number of iterations = ", findmin(weight_dict[filename_bps])[2][2] )
+println("MST_Algo = ", findmin(weight_dict[filename_bps])[2][3] )
 println("Total weight of best tour is ", findmin(weight_dict[filename_bps])[1] )
 println("****************************************************")
 end
@@ -53,11 +56,12 @@ end
 
 
 for filename_bps in all_files
-println("****************************************************")
-println("The best combination for instance ", filename_bps)
-println("Step method number = ", findmin(weight_dict[filename_bps])[2][1], " and number of iterations = ", findmin(weight_dict[filename_bps])[2][2] )
-println("Total weight of best tour is ", findmin(weight_dict[filename_bps])[1] )
-println("****************************************************")
+  println("****************************************************")
+  println("The best combination for instance ", filename_bps)
+  println("Step method number = ", findmin(weight_dict[filename_bps])[2][1], " and number of iterations = ", findmin(weight_dict[filename_bps])[2][2] )
+  println("MST_Algo = ", findmin(weight_dict[filename_bps])[2][3] )
+  println("Total weight of best tour is ", findmin(weight_dict[filename_bps])[1] )
+  println("****************************************************")
 end
 
 
